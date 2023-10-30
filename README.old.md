@@ -1,1 +1,0 @@
-# parko-client application
