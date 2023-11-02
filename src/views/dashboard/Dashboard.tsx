@@ -1,58 +1,68 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
 
 import Footer from "../footer/Footer";
-
-const sections = [
-  { title: "Technology", url: "#" },
-  { title: "Design", url: "#" },
-  { title: "Culture", url: "#" },
-  { title: "Business", url: "#" },
-  { title: "Politics", url: "#" },
-  { title: "Opinion", url: "#" },
-  { title: "Science", url: "#" },
-  { title: "Health", url: "#" },
-  { title: "Style", url: "#" },
-  { title: "Travel", url: "#" },
-];
-
-const sidebar = {
-  title: "Hi",
-  description:
-    "Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.",
-  archives: [
-    { title: "March 2020", url: "#" },
-    { title: "February 2020", url: "#" },
-    { title: "January 2020", url: "#" },
-    { title: "November 1999", url: "#" },
-    { title: "October 1999", url: "#" },
-    { title: "September 1999", url: "#" },
-    { title: "August 1999", url: "#" },
-    { title: "July 1999", url: "#" },
-    { title: "June 1999", url: "#" },
-    { title: "May 1999", url: "#" },
-    { title: "April 1999", url: "#" },
-  ],
-  social: [
-    { name: "GitHub", icon: GitHubIcon },
-    { name: "Twitter", icon: TwitterIcon },
-    { name: "Facebook", icon: FacebookIcon },
-  ],
-};
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import Sidebar from "../sidebar/Sidebar";
+import ActionAreaCard from "../../components/card/Card";
+import { Box, List, ListItem } from "@mui/material";
 
 export default function Dashboard() {
+  let currentWindow = false;
+
   return (
-    <Grid>
-      <Container sx={{ backgroundColor: "blue", height: 100 }}></Container>
-      <Container sx={{ backgroundColor: "red" }}>
+    <Grid container display={"flex"} xs={12}>
+      <Sidebar></Sidebar>
+
+      <Container
+        sx={{
+          display: "flex",
+          bgcolor: "#f6f6f6",
+          justifyContent: "flex-start",
+        }}
+      >
+        <List sx={{ m: 2, mt: 10, p: 2 }}>
+          {[
+            "Dashboard",
+            "Profile",
+            "About Us",
+            "Dashboard1",
+            "Profile1",
+            "About Us1",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ActionAreaCard
+                color={index === 0 ? "black" : "white"}
+                index={index}
+              />
+            </ListItem>
+          ))}
+        </List>
+        <List sx={{ m: 2, mt: 10, p: 2, display: currentWindow ? "none" : "" }}>
+          {[
+            "Dashboard",
+            "Profile",
+            "About Us",
+            "Dashboard1",
+            "Profile1",
+            "About Us1",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ActionAreaCard
+                color={index === 0 ? "black" : "white"}
+                index={index}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Container>
+      <Container
+        sx={{
+          display: "flow",
+          width: "100vh",
+        }}
+      >
         <CssBaseline />
-        <Container maxWidth="lg"></Container>
         <Footer
           title="Footer"
           description="Parko - now park stress free and focus on your job"
