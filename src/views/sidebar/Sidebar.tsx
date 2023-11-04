@@ -43,7 +43,14 @@ export default function ResponsiveDrawer(props: Props) {
   const drawer = (
     <Container sx={{ alignItems: "center", justifyContent: "center" }}>
       <Avatar
-        sx={{ m: 3, bgcolor: "secondary.main", height: 150, width: 150 }}
+        sx={{
+          m: 3,
+          bgcolor: "secondary.main",
+          height: 150,
+          width: 150,
+          borderColor: "blue",
+          borderWidth: 10,
+        }}
         src={icon}
       ></Avatar>
       <Typography
