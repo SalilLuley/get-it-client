@@ -9,7 +9,6 @@ export default function Dashboard() {
         component="main"
         sx={{
           display: "flex",
-          // flexGrow: 2,
           width: { sm: `calc(100% - ${240}px)` },
         }}
       >
@@ -25,7 +24,7 @@ export default function Dashboard() {
       <Box
         component="main"
         sx={{
-          bgcolor: "red",
+          bgcolor: "",
           width: { sm: `calc(100% - ${240}px)` },
           display: { sm: "flex", md: "flex", xs: "none" },
         }}

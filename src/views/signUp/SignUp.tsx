@@ -9,6 +9,10 @@ import Box from "@mui/material/Box";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import axios from "axios";
+import { useState } from "react";
+import { Alert, AlertTitle } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -28,16 +32,36 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingError, setIsLoadingError] = useState(false);
+  const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      username: formData.get("email"),
+      password: formData.get("password"),
     });
+
+    axios
+      .post("http://localhost:2001/users/create", {
+        username: formData.get("username"),
+        password: formData.get("password"),
+        firstname: formData.get("firstName"),
+        lastname: formData.get("lastName"),
+        role: "user",
+      })
+      .then(() => {
+        setIsLoading(false);
+        setIsLoadingError(false);
+        navigate("/");
+      })
+      .catch(function () {
+        setIsLoading(false);
+        setIsLoadingError(true);
+      });
   };
 
   return (
@@ -84,10 +108,10 @@ const SignUp = () => {
               <TextField
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
@@ -117,6 +141,22 @@ const SignUp = () => {
               </Link>
             </Grid>
           </Grid>
+          {isLoading ? (
+            <Alert sx={{ m: 4 }} severity="success">
+              <AlertTitle>Success</AlertTitle>
+              Success <strong>Welcome to Parko</strong>
+            </Alert>
+          ) : (
+            <></>
+          )}
+          {isLoadingError ? (
+            <Alert sx={{ m: 4 }} severity="error">
+              <AlertTitle>Error</AlertTitle>
+              <strong>Please fill in all details</strong>
+            </Alert>
+          ) : (
+            <></>
+          )}
         </Box>
       </Box>
       <Copyright sx={{ mt: 5 }} />

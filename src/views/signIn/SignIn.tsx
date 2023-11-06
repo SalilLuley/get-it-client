@@ -12,6 +12,9 @@ import Grid from "@mui/material/Grid";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Alert, AlertTitle } from "@mui/material";
+import { useState } from "react";
 
 function Copyright(props: any) {
   return (
@@ -31,19 +34,31 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 export default function SignInSide() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingError, setIsLoadingError] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    navigate("/dashboard");
+    const formData = new FormData(event.currentTarget);
+    setIsLoadingError(false);
+    setIsLoading(false);
+
+    axios
+      .post("http://localhost:2001/auth/login", {
+        username: formData.get("username"),
+        password: formData.get("password"),
+      })
+      .then(() => {
+        setIsLoading(false);
+        setIsLoadingError(false);
+        navigate("/dashboard");
+      })
+      .catch(function () {
+        setIsLoading(false);
+        setIsLoadingError(true);
+      });
   };
 
   return (
@@ -91,10 +106,9 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
               autoFocus
             />
             <TextField
@@ -107,10 +121,10 @@ export default function SignInSide() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -133,6 +147,22 @@ export default function SignInSide() {
             </Grid>
             <Copyright sx={{ mt: 5 }} />
           </Box>
+          {isLoading ? (
+            <Alert sx={{ m: 3 }} severity="success">
+              <AlertTitle>Success</AlertTitle>
+              Hurray valid credentials <strong>Welcome to Parko</strong>
+            </Alert>
+          ) : (
+            <></>
+          )}
+          {isLoadingError ? (
+            <Alert sx={{ m: 3 }} severity="error">
+              <AlertTitle>Error</AlertTitle>
+              <strong>Please use valid credentials</strong>
+            </Alert>
+          ) : (
+            <></>
+          )}
         </Box>
       </Grid>
     </Grid>
