@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Alert, AlertTitle } from "@mui/material";
 import { useState } from "react";
+import { ROUTES } from "../../route/Constants";
+import { NETWORKING_CONTSTANTS } from "../../network/Common";
 
 function Copyright(props: any) {
   return (
@@ -38,6 +40,7 @@ export default function SignInSide() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingError, setIsLoadingError] = useState(false);
+  const [user, setUser] = useState(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,14 +49,17 @@ export default function SignInSide() {
     setIsLoading(false);
 
     axios
-      .post("http://localhost:2001/auth/login", {
+      .post(NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.SIGN_UP, {
         username: formData.get("username"),
         password: formData.get("password"),
       })
-      .then(() => {
+      .then((data: any) => {
+        console.log(data.data.data);
         setIsLoading(false);
         setIsLoadingError(false);
-        navigate("/dashboard");
+        setUser(data.data.data);
+
+        navigate(ROUTES.DASHBOARD);
       })
       .catch(function () {
         setIsLoading(false);
