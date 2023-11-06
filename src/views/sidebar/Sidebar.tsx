@@ -1,39 +1,69 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Container,
-  CssBaseline,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import { styled } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import MenuIcon from "@mui/icons-material/Inbox";
-import InfoIcon from "@mui/icons-material/Info";
-import React from "react";
-import ComboBox from "../../components/searchbar/SearchBar";
-import icon from "../../assets/24896386.jpeg";
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+import FaceIcon from "@mui/icons-material/Face";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
-export default function ResponsiveDrawer(props: Props) {
-  const { window } = props;
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: "#F6F6F6", //alpha(theme.palette.common.white, 0.15), bgcolor:
+  "&:hover": {
+    backgroundColor: "#F6F6F6", //alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "40%",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
+export default function ResponsiveDrawer() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -41,40 +71,25 @@ export default function ResponsiveDrawer(props: Props) {
   };
 
   const drawer = (
-    <Container sx={{ alignItems: "center", justifyContent: "center" }}>
-      <Avatar
-        sx={{
-          m: 3,
-          bgcolor: "secondary.main",
-          height: 150,
-          width: 150,
-          borderColor: "blue",
-          borderWidth: 10,
-        }}
-        src={icon}
-      ></Avatar>
-      <Typography
-        variant="h6"
-        sx={{
-          m: 2,
-          display: "grid",
-          justifyItems: "center",
-        }}
-      >
-        Salil Luley
-      </Typography>
-      <Divider></Divider>
+    <Box sx={{ height: "100vh", bgcolor: "#232b2b" }}>
+      <Box
+        component="img"
+        src="https://parko.in/assets/img/parko_logo.png"
+        sx={{ width: drawerWidth, p: 3 }}
+      ></Box>
+
+      {/* <Divider /> */}
       <List>
-        {["Dashboard", "Profile", "About Us"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        {["Dashboard", "Profile", "Settings"].map((text, index) => (
+          <ListItem sx={{ color: "white" }} key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 {index === 0 ? (
-                  <DashboardIcon />
+                  <DashboardIcon sx={{ color: "white" }} />
                 ) : index === 1 ? (
-                  <AccountCircleIcon />
+                  <FaceIcon sx={{ color: "white" }} />
                 ) : (
-                  <InfoIcon />
+                  <SettingsApplicationsIcon sx={{ color: "white" }} />
                 )}
               </ListItemIcon>
               <ListItemText primary={text} />
@@ -82,35 +97,47 @@ export default function ResponsiveDrawer(props: Props) {
           </ListItem>
         ))}
       </List>
-    </Container>
+      <Divider sx={{ bgcolor: "white" }} />
+      <ListItemButton>
+        <ListItemIcon>
+          <LogoutIcon sx={{ color: "white" }} />
+        </ListItemIcon>
+        <ListItemText sx={{ color: "white" }} primary={"Logout"} />
+      </ListItemButton>
+    </Box>
   );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
-        elevation={0}
         position="fixed"
+        // elevation={0}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar sx={{ bgcolor: "white", position: "sticky" }}>
+        <Toolbar sx={{ bgcolor: "white" }}>
           <IconButton
-            color="secondary"
+            color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { sm: "none" }, color: "grey" }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography> This is Toolbar</Typography>
-          <ComboBox></ComboBox>
+          <Search sx={{ m: 2 }}>
+            <SearchIconWrapper>
+              <SearchIcon sx={{ color: "grey" }} />
+            </SearchIconWrapper>
+            <StyledInputBase
+              sx={{ color: "grey" }}
+              placeholder="Location"
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
         </Toolbar>
       </AppBar>
       <Box
@@ -118,14 +145,12 @@ export default function ResponsiveDrawer(props: Props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -144,7 +169,6 @@ export default function ResponsiveDrawer(props: Props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              border: 0,
             },
           }}
           open
