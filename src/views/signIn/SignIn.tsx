@@ -47,11 +47,18 @@ export default function SignInSide() {
     const formData = new FormData(event.currentTarget);
     setIsLoadingError(false);
     setIsLoading(false);
+    const username = formData.get("username");
+    const password = formData.get("password");
+
+    if (username == "" || password == "") {
+      setIsLoadingError(true);
+      return;
+    }
 
     axios
       .post(NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.SIGN_UP, {
-        username: formData.get("username"),
-        password: formData.get("password"),
+        username,
+        password,
       })
       .then((data: any) => {
         console.log(data.data.data);

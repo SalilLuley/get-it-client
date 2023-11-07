@@ -40,18 +40,22 @@ const SignUp = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log({
-      username: formData.get("email"),
-      password: formData.get("password"),
-    });
-
+    const username = formData.get("username");
+    const password = formData.get("password");
+    const firstname = formData.get("firstName");
+    const lastname = formData.get("lastName");
+    const role = "user";
+    if (username == "" || password == "" || firstname == "" || lastname == "") {
+      setIsLoadingError(true);
+      return;
+    }
     axios
       .post("http://localhost:2001/users/create", {
-        username: formData.get("username"),
-        password: formData.get("password"),
-        firstname: formData.get("firstName"),
-        lastname: formData.get("lastName"),
-        role: "user",
+        username,
+        password,
+        firstname,
+        lastname,
+        role,
       })
       .then(() => {
         setIsLoading(false);

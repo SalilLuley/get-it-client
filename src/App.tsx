@@ -9,11 +9,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
         <Route path={ROUTES.DEFAULT} element={<PrivateRoute />}>
           <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
         </Route>
-        <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
-        <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );
