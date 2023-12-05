@@ -7,8 +7,8 @@ export const GoogleMapsWrapper = ({
 }: {
   children: React.ReactNode;
 }) => {
-  //   console.log(process.env.REACT_APP_SECRET_NAME);
-  const apiKey = "";
+  console.log("AIzaSyAWCCRckGxKlnGnfQ96KpHZ2mBrQc19YFk"); //process.env.REACT_APP_MAPS_API ?? "",);
+  const apiKey = "AIzaSyAWCCRckGxKlnGnfQ96KpHZ2mBrQc19YFk"; //process.env.REACT_APP_MAPS_API ?? "",
 
   if (!apiKey) {
     return <div>Cannot display the map: google maps api key missing</div>;
@@ -17,7 +17,7 @@ export const GoogleMapsWrapper = ({
   return <Wrapper apiKey={apiKey}>{children}</Wrapper>;
 };
 
-const DEFAULT_CENTER = { lat: 48.8566, lng: 2.3522 };
+const DEFAULT_CENTER = { lat: 53.3498, lng: 6.2603 };
 const DEFAULT_ZOOM = 7;
 
 export const GoogleMaps = () => {
@@ -33,7 +33,7 @@ export const GoogleMaps = () => {
   }, [ref]);
 
   return (
-    <Container sx={{ height: "100vh", width: "80vh" }}>
+    <Container sx={{ height: "80vh", width: "80vh" }}>
       <div ref={ref} style={{ width: "inherit", height: "inherit" }} />
     </Container>
   );

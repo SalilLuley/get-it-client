@@ -19,6 +19,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import FaceIcon from "@mui/icons-material/Face";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -64,7 +65,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function ResponsiveDrawer() {
+  const navigate = useNavigate();
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handlePageChange = (text: string) => {
+    navigate(text);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -81,7 +88,12 @@ export default function ResponsiveDrawer() {
       {/* <Divider /> */}
       <List>
         {["Dashboard", "Profile", "Settings"].map((text, index) => (
-          <ListItem sx={{ color: "white" }} key={text} disablePadding>
+          <ListItem
+            sx={{ color: "white" }}
+            key={text}
+            onClick={() => handlePageChange(text)}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 {index === 0 ? (
