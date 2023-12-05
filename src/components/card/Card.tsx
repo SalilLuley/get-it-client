@@ -6,11 +6,22 @@ import Typography from "@mui/material/Typography";
 import fav from "../../assets/fav.png";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
-export default function ActionAreaCard() {
+
+interface ParkingSpot {
+  title: string;
+  body: string;
+  rent: number;
+  latitude: number;
+  longitude: number;
+  address: string;
+  postalCode: string;
+}
+
+export default function ActionAreaCard(parkingSpot: ParkingSpot) {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ display: "flex", m: 2 }}>
+    <Card sx={{ display: "flex", m: 3 }}>
       <CardMedia
         onClick={() => {
           navigate(ROUTES.DETAIL);
@@ -23,7 +34,7 @@ export default function ActionAreaCard() {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5">
-            Live From Space
+            {parkingSpot.title}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box component="img" src={fav} />
@@ -36,8 +47,7 @@ export default function ActionAreaCard() {
             </Typography>
           </Box>
           <Typography variant="subtitle1" color="text" component="div">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            {parkingSpot.body}
           </Typography>
         </CardContent>
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}></Box>
