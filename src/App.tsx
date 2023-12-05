@@ -8,6 +8,8 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import ResponsiveDrawer from "./views/sidebar/Sidebar";
 import Profile from "./views/profile/profile";
 import "./App.css";
+import OrderDetailsPage from "./views/detail/Detail";
+import Settings from "./views/settings/Settings";
 
 const theme = createTheme({
   palette: {
@@ -41,9 +43,15 @@ function App() {
             <Route element={<SidebarLayout />}>
               <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
               <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
+              <Route
+                path={ROUTES.DETAIL}
+                element={<OrderDetailsPage />}
+              ></Route>
+              <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
             </Route>
           </Routes>
         </div>
+        Settings
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -29,21 +29,17 @@ const OrderDetailsPage = () => {
 
   return (
     <React.Fragment>
-      <Modal
-        open={true}
-        onClose={() => {
-          console.log("Modal closed");
+      <Box
+        component="main"
+        sx={{
+          display: "flex",
+          ml: { sm: "240px", xs: 0 },
+          mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
+          backgroundColor: "red",
         }}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
       >
-        <Box sx={{ width: 400 }}>
-          <h2 id="parent-modal-title">Text in a modal</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-        </Box>
-      </Modal>
+        Detail Product
+      </Box>
     </React.Fragment>
   );
 };

@@ -4,10 +4,17 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import fav from "../../assets/fav.png";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../route/Constants";
 export default function ActionAreaCard() {
+  const navigate = useNavigate();
+
   return (
     <Card sx={{ display: "flex", m: 2 }}>
       <CardMedia
+        onClick={() => {
+          navigate(ROUTES.DETAIL);
+        }}
         component="img"
         sx={{ width: "40%", height: "20%", p: 2, borderRadius: 2 }}
         image="https://info.hignell.com/hubfs/HR/Images/Blog%20Images/reserved%20parking%20spot_10441780.jpg"

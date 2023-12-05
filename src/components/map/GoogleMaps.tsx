@@ -7,8 +7,7 @@ export const GoogleMapsWrapper = ({
 }: {
   children: React.ReactNode;
 }) => {
-  console.log("AIzaSyAWCCRckGxKlnGnfQ96KpHZ2mBrQc19YFk"); //process.env.REACT_APP_MAPS_API ?? "",);
-  const apiKey = "AIzaSyAWCCRckGxKlnGnfQ96KpHZ2mBrQc19YFk"; //process.env.REACT_APP_MAPS_API ?? "",
+  const apiKey = import.meta.env.VITE_MAPS_API ?? "";
 
   if (!apiKey) {
     return <div>Cannot display the map: google maps api key missing</div>;
@@ -33,7 +32,7 @@ export const GoogleMaps = () => {
   }, [ref]);
 
   return (
-    <Container sx={{ height: "80vh", width: "80vh" }}>
+    <Container sx={{ height: "80vh", width: "70vh" }}>
       <div ref={ref} style={{ width: "inherit", height: "inherit" }} />
     </Container>
   );
