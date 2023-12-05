@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const config = {
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIyLCJkYXRhIjp7InJvbGUiOiJ1c2VyIn0sImlhdCI6MTcwMTgxNDA0MywiZXhwIjoxNzAxODE0OTQzfQ.LuCHQROlw1XX-GYCOp9nuO1WxIoYVmFWr5LjxU9-IVk`,
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 };
 

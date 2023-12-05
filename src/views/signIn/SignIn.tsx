@@ -65,7 +65,8 @@ export default function SignInSide() {
         setIsLoading(false);
         setIsLoadingError(false);
         setUser(data.data.data);
-
+        console.log(data.data.data.token);
+        localStorage.setItem("token", data.data.data.token);
         navigate(ROUTES.DASHBOARD);
       })
       .catch(function () {
