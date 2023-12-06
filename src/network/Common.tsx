@@ -15,5 +15,6 @@ export const NETWORKING_CONTSTANTS = {
   },
   ORDERS: {
     GET_MY_ORDERS: "order/get-all",
+    CREATE: "order/create",
   },
 };

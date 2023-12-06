@@ -72,15 +72,13 @@ export default function MyOrders() {
     <React.Fragment>
       <Box
         component="main"
+        display="flex"
         sx={{
-          height: "100vh",
           backgroundColor: "#F6F6F6",
-          display: "flex",
-          flexDirection: "column",
           ml: { sm: "240px", xs: 0 },
         }}
       >
-        <Grid flex={1} container>
+        <Grid sx={{ backgroundColor: "#F6F6F6" }} flex={1} container>
           <Grid item xs={11}>
             <Container sx={{ mt: 5, mb: 5, ml: 2 }}>
               <Typography variant="h4" component="h1" gutterBottom>
