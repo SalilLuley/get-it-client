@@ -2,12 +2,14 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {
+  Autocomplete,
   Box,
   CssBaseline,
   List,
   ListItem,
   Modal,
   Slider,
+  TextField,
   Typography,
 } from "@mui/material";
 import ActionAreaCard from "../../components/card/Card";
@@ -46,6 +48,7 @@ export default function Dashboard() {
   };
   const navigate = useNavigate();
   const [parkingSpots, setParkingSpots] = useState([]);
+  const [setSearchParkingSpots, setSearchSetParkingSpots] = useState([]);
 
   useEffect(() => {
     axios
@@ -56,6 +59,14 @@ export default function Dashboard() {
       .then((data: any) => {
         console.log(data.data.data);
         setParkingSpots(data.data.data);
+        const parkingSpots: any[] = data.data.data;
+        const spots: any = parkingSpots.map((item: any) => {
+          return {
+            label: item.title,
+            id: item.id,
+          };
+        });
+        setSearchSetParkingSpots(spots);
       })
       .catch((error) => {
         console.log("Error me", error);
@@ -98,19 +109,34 @@ export default function Dashboard() {
         sx={{
           backgroundColor: "#F6F6F6",
           ml: { sm: "240px", xs: 0 },
-          mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
         }}
       >
         <Grid flex={1} sx={{ ml: 2, mb: 10 }} container spacing={2}>
-          <Grid item xs={12} ml={5} mt={5}>
+          <Grid item xs={12} mt={2}>
+            <Autocomplete
+              disablePortal
+              onChange={(event: any, newValue: any) => {
+                console.log("newValue", newValue);
+                navigate(ROUTES.DETAIL, {
+                  state: { id: newValue.id },
+                  replace: true,
+                });
+              }}
+              id="combo-box-demo"
+              options={setSearchParkingSpots}
+              sx={{ width: { xs: "90%", sm: "60%" }, mb: 2 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Locations" />
+              )}
+            />
             <Typography color="#3e4958" component="div" variant="body2">
-              400+ Parking Locations
+              {/* 400+ Parking Locations */}
             </Typography>
             <Typography component="div" variant="h5">
               Live From Space
             </Typography>
           </Grid>
-          <Grid item xs={12} ml={5}>
+          <Grid item xs={12}>
             <Box sx={{ width: { xs: "75%", sm: "25%" } }}>
               <Typography component="div" variant="body2">
                 Filter By Rent

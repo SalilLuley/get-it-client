@@ -56,10 +56,9 @@ const OrderDetailsPage = () => {
         justifyContent: "center",
         p: 2,
         ml: { sm: "240px", xs: 0 },
-        mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
       }}
     >
-      <Card sx={{ maxWidth: 800, m: "auto", mt: 5, mb: 5, p: 2, boxShadow: 3 }}>
+      <Card sx={{ m: "auto", mb: 5, p: 2, boxShadow: 3 }}>
         <CardMedia
           component="img"
           height="400"

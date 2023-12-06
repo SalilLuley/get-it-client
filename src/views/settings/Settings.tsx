@@ -7,7 +7,6 @@ export default function Settings() {
       sx={{
         display: "flex",
         ml: { sm: "240px", xs: 0 },
-        mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
         backgroundColor: "red",
       }}
     >

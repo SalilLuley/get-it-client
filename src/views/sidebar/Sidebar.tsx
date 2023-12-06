@@ -158,14 +158,16 @@ export default function ResponsiveDrawer() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
-        position="fixed"
+        position="sticky"
         elevation={0}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar sx={{ bgcolor: "white" }}>
+        <Toolbar
+          sx={{ bgcolor: "#F6F6F6", display: { xs: "flex", sm: "none" } }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -175,7 +177,7 @@ export default function ResponsiveDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Autocomplete
+          {/* <Autocomplete
             disablePortal
             onChange={(event: any, newValue: any) => {
               console.log("newValue", newValue);
@@ -190,7 +192,7 @@ export default function ResponsiveDrawer() {
             renderInput={(params) => (
               <TextField {...params} label="Locations" />
             )}
-          />
+          /> */}
         </Toolbar>
       </AppBar>
       <Box
@@ -206,6 +208,7 @@ export default function ResponsiveDrawer() {
             keepMounted: true,
           }}
           sx={{
+            position: "sticky",
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
@@ -218,6 +221,7 @@ export default function ResponsiveDrawer() {
         <Drawer
           variant="permanent"
           sx={{
+            position: "sticky",
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
