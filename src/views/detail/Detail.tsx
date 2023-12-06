@@ -5,6 +5,8 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Container,
+  Grid,
   Typography,
 } from "@mui/material";
 import axios from "axios";
@@ -52,42 +54,50 @@ const OrderDetailsPage = () => {
         backgroundColor: "#F6F6F6",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         p: 2,
+        height: "100vh",
         ml: { sm: "240px", xs: 0 },
       }}
     >
-      <Card sx={{ m: "auto", mb: 5, p: 2, boxShadow: 3 }}>
-        <CardMedia
-          component="img"
-          height="400"
-          image="https://info.hignell.com/hubfs/HR/Images/Blog%20Images/reserved%20parking%20spot_10441780.jpg"
-          alt={(parkingSpot as { title: string })["title"]}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {(parkingSpot as { title: string })["title"]}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            {(parkingSpot as { body: string })["body"]}
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-            <Typography variant="body2" color="text.secondary">
-              Address : {(parkingSpot as { address: string })["address"]}
+      <Grid flex={1} container>
+        <Grid item xs={11}>
+          <Container sx={{ mt: 3, mb: 5 }}>
+            <Typography variant="h4" component="h1" gutterBottom>
+              Parking Lot Details
             </Typography>
-          </Box>
-        </CardContent>
-        <CardActions sx={{ p: 2 }}>
-          <Typography variant="h6">
-            €{(parkingSpot as { rent: string })["rent"]}
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <Button size="small" variant="contained" color="primary">
-            Reserve Now
-          </Button>
-        </CardActions>
-      </Card>
+          </Container>
+          <Card sx={{ m: "auto", mb: 5, p: 2, ml: 3, boxShadow: 3 }}>
+            <CardMedia
+              sx={{ height: { xs: "auto", sm: 400 } }}
+              component="img"
+              image="https://info.hignell.com/hubfs/HR/Images/Blog%20Images/reserved%20parking%20spot_10441780.jpg"
+              alt={(parkingSpot as { title: string })["title"]}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {(parkingSpot as { title: string })["title"]}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                {(parkingSpot as { body: string })["body"]}
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Address : {(parkingSpot as { address: string })["address"]}
+                </Typography>
+              </Box>
+            </CardContent>
+            <CardActions sx={{ p: 2 }}>
+              <Typography variant="h6">
+                €{(parkingSpot as { rent: string })["rent"]}
+              </Typography>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button size="small" variant="contained" color="primary">
+                Reserve Now
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
