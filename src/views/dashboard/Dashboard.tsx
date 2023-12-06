@@ -20,22 +20,21 @@ import { ROUTES } from "../../route/Constants";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
-  padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+// const style = {
+//   position: "absolute" as "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 400,
+//   bgcolor: "background.paper",
+//   border: "2px solid #000",
+//   boxShadow: 24,
+//   p: 4,
+// };
 
 export default function Dashboard() {
   const [open, setOpen] = useState(false);
@@ -93,17 +92,16 @@ export default function Dashboard() {
   return (
     <CssBaseline>
       <Box
+        flex={1}
+        display={"flex"}
         component="main"
         sx={{
           backgroundColor: "#F6F6F6",
           ml: { sm: "240px", xs: 0 },
           mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
-          mb: 10,
-          height: "100vh",
         }}
-        overflow="auto"
       >
-        <Grid sx={{ ml: 2 }} container spacing={2}>
+        <Grid flex={1} sx={{ ml: 2, mb: 10 }} container spacing={2}>
           <Grid item xs={12} ml={5} mt={5}>
             <Typography color="#3e4958" component="div" variant="body2">
               400+ Parking Locations
@@ -128,9 +126,9 @@ export default function Dashboard() {
               />
             </Box>
           </Grid>
-          <Grid item xs={10} sm={11} md={11} lg={11} xl={11}>
+          <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
             <Item>
-              <List>
+              <List sx={{ backgroundColor: "#F6F6F6" }}>
                 {parkingSpots.map((spot: any) => (
                   <ListItem key={spot["title"]} disablePadding>
                     <ActionAreaCard {...spot} />
@@ -146,7 +144,7 @@ export default function Dashboard() {
           </Grid> */}
         </Grid>
 
-        <Modal
+        {/* <Modal
           open={open}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -159,7 +157,7 @@ export default function Dashboard() {
               Please relogin
             </Typography>
           </Box>
-        </Modal>
+        </Modal> */}
       </Box>
     </CssBaseline>
   );

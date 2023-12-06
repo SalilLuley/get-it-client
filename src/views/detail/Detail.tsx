@@ -59,34 +59,6 @@ const OrderDetailsPage = () => {
         mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
       }}
     >
-      {/* <Card sx={{ maxWidth: "90vh", width: "100%", m: "auto" }}>
-        <CardMedia
-          component="img"
-          image="https://info.hignell.com/hubfs/HR/Images/Blog%20Images/reserved%20parking%20spot_10441780.jpg"
-          alt={(parkingSpot as { title: string })["title"]}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {(parkingSpot as { title: string })["title"]}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {(parkingSpot as { body: string })["body"]}
-          </Typography>
-
-          <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
-            Address : {(parkingSpot as { address: string })["address"]}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Typography variant="h6">
-            ${(parkingSpot as { rent: string })["rent"]}
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <Button size="small" variant="contained" color="primary">
-            Reserve Now
-          </Button>
-        </CardActions>
-      </Card> */}
       <Card sx={{ maxWidth: 800, m: "auto", mt: 5, mb: 5, p: 2, boxShadow: 3 }}>
         <CardMedia
           component="img"
@@ -109,7 +81,7 @@ const OrderDetailsPage = () => {
         </CardContent>
         <CardActions sx={{ p: 2 }}>
           <Typography variant="h6">
-            ${(parkingSpot as { rent: string })["rent"]}
+            €{(parkingSpot as { rent: string })["rent"]}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Button size="small" variant="contained" color="primary">
