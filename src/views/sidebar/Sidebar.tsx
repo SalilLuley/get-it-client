@@ -78,7 +78,7 @@ export default function ResponsiveDrawer() {
   };
 
   const drawer = (
-    <Box sx={{ height: "100vh", bgcolor: "#232b2b" }}>
+    <Box sx={{ height: "100vh" }}>
       <Box
         component="img"
         src="https://parko.in/assets/img/parko_logo.png"
@@ -89,7 +89,7 @@ export default function ResponsiveDrawer() {
       <List>
         {["Dashboard", "Profile", "Settings"].map((text, index) => (
           <ListItem
-            sx={{ color: "white" }}
+            sx={{ color: "black" }}
             key={text}
             onClick={() => handlePageChange(text)}
             disablePadding
@@ -97,11 +97,11 @@ export default function ResponsiveDrawer() {
             <ListItemButton>
               <ListItemIcon>
                 {index === 0 ? (
-                  <DashboardIcon sx={{ color: "white" }} />
+                  <DashboardIcon />
                 ) : index === 1 ? (
-                  <FaceIcon sx={{ color: "white" }} />
+                  <FaceIcon />
                 ) : (
-                  <SettingsApplicationsIcon sx={{ color: "white" }} />
+                  <SettingsApplicationsIcon />
                 )}
               </ListItemIcon>
               <ListItemText primary={text} />
@@ -112,9 +112,9 @@ export default function ResponsiveDrawer() {
       <Divider sx={{ bgcolor: "white" }} />
       <ListItemButton>
         <ListItemIcon>
-          <LogoutIcon sx={{ color: "white" }} />
+          <LogoutIcon />
         </ListItemIcon>
-        <ListItemText sx={{ color: "white" }} primary={"Logout"} />
+        <ListItemText primary={"Logout"} />
       </ListItemButton>
     </Box>
   );

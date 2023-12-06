@@ -11,16 +11,7 @@ import "./App.css";
 import OrderDetailsPage from "./views/detail/Detail";
 import Settings from "./views/settings/Settings";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#0074d9",
-    },
-    secondary: {
-      main: "#b10dc9",
-    },
-  },
-});
+const defaultTheme = createTheme();
 
 const SidebarLayout = () => (
   <>
@@ -31,27 +22,22 @@ const SidebarLayout = () => (
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <Routes>
           <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={ROUTES.DEFAULT} element={<PrivateRoute />}></Route>
         </Routes>
-        <div className="screen-container">
-          <Routes>
-            <Route element={<SidebarLayout />}>
-              <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-              <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
-              <Route
-                path={ROUTES.DETAIL}
-                element={<OrderDetailsPage />}
-              ></Route>
-              <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
-            </Route>
-          </Routes>
-        </div>
-        Settings
+
+        <Routes>
+          <Route element={<SidebarLayout />}>
+            <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+            <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
+            <Route path={ROUTES.DETAIL} element={<OrderDetailsPage />}></Route>
+            <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
+          </Route>
+        </Routes>
       </BrowserRouter>
     </ThemeProvider>
   );

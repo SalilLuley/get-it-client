@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
 
 interface ParkingSpot {
+  id: number;
   title: string;
   body: string;
   rent: number;
@@ -21,19 +22,29 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ display: "flex", m: 3 }}>
+    <Card sx={{ display: "flex", m: 3, height: { xs: "40vh" } }}>
       <CardMedia
         onClick={() => {
-          navigate(ROUTES.DETAIL);
+          navigate(ROUTES.DETAIL, { state: { id: parkingSpot.id } });
         }}
         component="img"
-        sx={{ width: "40%", height: "20%", p: 2, borderRadius: 2 }}
+        sx={{
+          width: "40%",
+          height: { sm: "auto", xs: "40%" },
+          p: 2,
+          borderRadius: 2,
+        }}
         image="https://info.hignell.com/hubfs/HR/Images/Blog%20Images/reserved%20parking%20spot_10441780.jpg"
         alt="Live from space album cover"
       />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
-          <Typography component="div" variant="h5">
+          <Typography
+            noWrap={true}
+            textOverflow={"ellipsis"}
+            component="div"
+            variant="h5"
+          >
             {parkingSpot.title}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
