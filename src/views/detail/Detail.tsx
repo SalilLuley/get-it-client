@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { ROUTES } from "../../route/Constants";
-import { SpaceBar } from "@mui/icons-material";
 
 const OrderDetailsPage = () => {
   const { state } = useLocation();

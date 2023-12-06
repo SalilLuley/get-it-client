@@ -17,7 +17,6 @@ export default function Profile() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [password, setPassword] = useState("");
 
   useEffect(() => {
     axios
@@ -42,7 +41,7 @@ export default function Profile() {
 
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
-    console.log(firstName, lastName, email, dateOfBirth, password);
+    console.log(firstName, lastName, email, dateOfBirth);
 
     axios
       .patch(
