@@ -11,6 +11,7 @@ import "./App.css";
 import OrderDetailsPage from "./views/detail/Detail";
 import Settings from "./views/settings/Settings";
 import OwnerAddParking from "./views/owners/addParking/AddParking";
+import Footer from "./views/footer/Footer";
 
 const defaultTheme = createTheme();
 
@@ -18,6 +19,10 @@ const SidebarLayout = () => (
   <>
     <ResponsiveDrawer />
     <Outlet />
+    <Footer
+      description="Now never think about finding a parking space"
+      title="Parko"
+    />
   </>
 );
 
@@ -29,9 +34,6 @@ function App() {
           <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={ROUTES.DEFAULT} element={<PrivateRoute />}></Route>
-        </Routes>
-
-        <Routes>
           <Route element={<SidebarLayout />}>
             <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
             <Route path={ROUTES.PROFILE} element={<Profile />}></Route>

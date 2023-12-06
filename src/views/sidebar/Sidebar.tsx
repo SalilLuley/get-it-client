@@ -77,6 +77,17 @@ export default function ResponsiveDrawer() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handlePageChange = (text: string) => {
+    const userRole = localStorage.getItem("role");
+    console.log(userRole);
+    const restrictedPages = ["Owners"];
+    // Check if the user has access to the page
+    if (restrictedPages.includes(text) && userRole !== "owner") {
+      // If the user does not have access, show an error message and return
+      alert(
+        "Only users with role Owners can add parking spots, please contact admin to change your role."
+      );
+      return;
+    }
     navigate(text);
   };
 
