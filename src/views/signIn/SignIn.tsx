@@ -61,11 +61,9 @@ export default function SignInSide() {
         password,
       })
       .then((data: any) => {
-        console.log(data.data.data);
         setIsLoading(false);
         setIsLoadingError(false);
         setUser(data.data.data);
-        console.log(data.data.data.token);
         localStorage.setItem("token", data.data.data.token);
         localStorage.setItem("role", data.data.data.role);
 

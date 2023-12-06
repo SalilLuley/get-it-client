@@ -36,11 +36,10 @@ export default function Profile() {
       .then((data: any) => {
         setFirstName(data.data.data.firstname);
         setLastName(data.data.data.lastname);
-        setDateOfBirth(data.data.data.dob);
+        if (!data.data.data.dob) setDateOfBirth(data.data.data.dob);
         setEmail(data.data.data.email);
       })
       .catch((error) => {
-        console.log("Error me", error);
         if (error.code === "ERR_BAD_REQUEST") {
           navigate(ROUTES.SIGN_IN, { replace: true });
         }
@@ -49,7 +48,6 @@ export default function Profile() {
 
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
-    console.log(firstName, lastName, email, dateOfBirth);
 
     axios
       .patch(
@@ -62,12 +60,8 @@ export default function Profile() {
         },
         config
       )
-      .then((data: any) => {
-        console.log("data", data);
-      })
-      .catch((error) => {
-        console.log("Error me", error);
-      });
+      .then((data: any) => {})
+      .catch((error) => {});
   }
 
   return (

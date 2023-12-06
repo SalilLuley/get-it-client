@@ -46,7 +46,6 @@ export default function OwnerAddParking() {
 
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
-    console.log(title, rent, body, address, postalCode);
 
     axios
       .patch(
@@ -60,11 +59,8 @@ export default function OwnerAddParking() {
         },
         config
       )
-      .then((data: any) => {
-        console.log("data", data);
-      })
+      .then((data: any) => {})
       .catch((error) => {
-        console.log("Error me", error);
         handleOpen();
       });
   }
@@ -81,8 +77,8 @@ export default function OwnerAddParking() {
           ml: { sm: "240px", xs: 0 },
         }}
       >
-        <Grid flex={1} container xs={11}>
-          <Grid item xs={11}>
+        <Grid flex={1} container>
+          <Grid item xs={10}>
             <Container sx={{ mt: 5, mb: 5, ml: 2 }}>
               <Typography variant="h4" component="h1" gutterBottom>
                 Add Parking Spot

@@ -50,7 +50,6 @@ export default function MyOrders() {
         config
       )
       .then((data: any) => {
-        console.log("data", data.data.data);
         const myOrders = data.data.data.map((order: any) => {
           return {
             duration: order.duration,

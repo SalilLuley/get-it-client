@@ -36,11 +36,9 @@ const OrderDetailsPage = () => {
         config
       )
       .then((data: any) => {
-        console.log("---", data.data.data);
         setParkingSpot(data.data.data);
       })
       .catch((error) => {
-        console.log("Error me", error);
         if (error.code === "ERR_BAD_REQUEST") {
           navigate(ROUTES.SIGN_IN, { replace: true });
         }

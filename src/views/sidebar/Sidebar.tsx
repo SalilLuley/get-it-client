@@ -12,117 +12,55 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import { styled } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { ROUTES } from "../../route/Constants";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PersonIcon from "@mui/icons-material/Person";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
+import { Modal, Typography, Button } from "@mui/material";
 
 const drawerWidth = 240;
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: "#F6F6F6", //alpha(theme.palette.common.white, 0.15), bgcolor:
-  "&:hover": {
-    backgroundColor: "#F6F6F6", //alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "40%",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
-
 export default function ResponsiveDrawer() {
   const navigate = useNavigate();
-  const config = {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  };
+  const [open, setOpen] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleErrorOpen = () => setOpenError(true);
+  const handleErrorClose = () => setOpenError(false);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handlePageChange = (text: string) => {
     const userRole = localStorage.getItem("role");
-    console.log(userRole);
-    const restrictedPages = ["Owners"];
-    // Check if the user has access to the page
-    if (restrictedPages.includes(text) && userRole !== "owner") {
-      // If the user does not have access, show an error message and return
-      alert(
-        "Only users with role Owners can add parking spots, please contact admin to change your role."
-      );
+    const restrictedPagesOwners = ["Owners"];
+    const restrictedPagesUsers = ["My Orders"];
+
+    if (restrictedPagesOwners.includes(text) && userRole !== "owner") {
+      handleErrorOpen();
+      return;
+    }
+
+    if (restrictedPagesUsers.includes(text) && userRole !== "user") {
+      handleErrorOpen();
       return;
     }
     navigate(text);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate(ROUTES.SIGN_IN);
+  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  const [parkingSpots, setParkingSpots] = React.useState([]);
-
-  React.useEffect(() => {
-    axios
-      .get(
-        NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.PARKING.GET_ALL,
-        config
-      )
-      .then((data: any) => {
-        const parkingSpots: any[] = data.data.data;
-        const spots: any = parkingSpots.map((item: any) => {
-          console.log("item", item.title);
-          return {
-            label: item.title,
-            id: item.id,
-          };
-        });
-        setParkingSpots(spots);
-      })
-      .catch((error) => {
-        console.log("Error me", error);
-        if (error.code === "ERR_BAD_REQUEST") {
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
-      });
-  }, []);
 
   const drawer = (
     <Box sx={{ height: "100vh" }}>
@@ -160,7 +98,7 @@ export default function ResponsiveDrawer() {
         {["Owners"].map((text, index) => (
           <ListItem
             sx={{ color: "black" }}
-            key={text}
+            key={index}
             onClick={() => handlePageChange(text)}
             disablePadding
           >
@@ -175,7 +113,7 @@ export default function ResponsiveDrawer() {
       </List>
       <Divider sx={{ bgcolor: "white" }} />
 
-      <ListItemButton>
+      <ListItemButton onClick={handleOpen}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>
@@ -207,22 +145,6 @@ export default function ResponsiveDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          {/* <Autocomplete
-            disablePortal
-            onChange={(event: any, newValue: any) => {
-              console.log("newValue", newValue);
-              navigate(ROUTES.DETAIL, {
-                state: { id: newValue.id },
-                replace: true,
-              });
-            }}
-            id="combo-box-demo"
-            options={parkingSpots}
-            sx={{ width: 300, mt: 1, ml: 2 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Locations" />
-            )}
-          /> */}
         </Toolbar>
       </AppBar>
       <Box
@@ -262,6 +184,70 @@ export default function ResponsiveDrawer() {
         >
           {drawer}
         </Drawer>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "80%", sm: "40%" },
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Confirm Logout
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Are you sure you want to logout?
+            </Typography>
+            <Box sx={{ mt: 2 }}></Box>
+            <Button variant="outlined" onClick={handleLogout}>
+              Yes
+            </Button>
+
+            <Button sx={{ ml: 2 }} variant="outlined" onClick={handleClose}>
+              No
+            </Button>
+          </Box>
+        </Modal>
+
+        <Modal
+          open={openError}
+          onClose={handleErrorClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "80%", sm: "40%" },
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Unauthorised Access
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              You do not have access to this page, please contact admin to know
+              more about your roles.
+            </Typography>
+          </Box>
+        </Modal>
       </Box>
     </Box>
   );

@@ -57,7 +57,6 @@ export default function Dashboard() {
         config
       )
       .then((data: any) => {
-        console.log(data.data.data);
         setParkingSpots(data.data.data);
         const parkingSpots: any[] = data.data.data;
         const spots: any = parkingSpots.map((item: any) => {
@@ -69,7 +68,6 @@ export default function Dashboard() {
         setSearchSetParkingSpots(spots);
       })
       .catch((error) => {
-        console.log("Error me", error);
         if (error.code === "ERR_BAD_REQUEST") {
           setOpen(true);
           navigate(ROUTES.SIGN_IN, { replace: true });
@@ -89,11 +87,9 @@ export default function Dashboard() {
         config
       )
       .then((data: any) => {
-        console.log(data.data.data);
         setParkingSpots(data.data.data);
       })
       .catch((error) => {
-        console.log("Error me", error);
         if (error.code === "ERR_BAD_REQUEST") {
           navigate(ROUTES.SIGN_IN, { replace: true });
         }
@@ -116,7 +112,6 @@ export default function Dashboard() {
             <Autocomplete
               disablePortal
               onChange={(event: any, newValue: any) => {
-                console.log("newValue", newValue);
                 navigate(ROUTES.DETAIL, {
                   state: { id: newValue.id },
                   replace: true,
