@@ -11,5 +11,6 @@ export const NETWORKING_CONTSTANTS = {
     FILTER: {
       RENT: "parking-spot/filter",
     },
+    CREATE: "parking-spot/create",
   },
 };

@@ -1,4 +1,12 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
@@ -70,45 +78,53 @@ export default function Profile() {
           height: "100vh",
           backgroundColor: "#F6F6F6",
           display: "flex",
+          flexDirection: "column",
           ml: { sm: "240px", xs: 0 },
         }}
       >
-        <form onSubmit={handleSubmit}>
-          <Stack
-            spacing={2}
-            direction="row"
-            sx={{ marginBottom: 4, ml: 5, mt: 5 }}
-          >
-            <TextField
-              type="text"
-              variant="outlined"
-              color="primary"
-              label="First Name"
-              onChange={(e) => setFirstName(e.target.value)}
-              value={firstName}
-              fullWidth
-            />
-            <TextField
-              type="text"
-              variant="outlined"
-              color="primary"
-              label="Last Name"
-              onChange={(e) => setLastName(e.target.value)}
-              value={lastName}
-              fullWidth
-            />
-          </Stack>
-          <TextField
-            type="email"
-            variant="outlined"
-            color="primary"
-            label="Email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            fullWidth
-            sx={{ mb: 4, ml: 5 }}
-          />
-          {/* <TextField
+        <Grid flex={1} container xs={11}>
+          <Grid item xs={11}>
+            <Container sx={{ mt: 5, mb: 5, ml: 2 }}>
+              <Typography variant="h4" component="h1" gutterBottom>
+                Update Profile Details
+              </Typography>
+            </Container>
+            <form onSubmit={handleSubmit}>
+              <Stack
+                spacing={2}
+                direction="row"
+                sx={{ marginBottom: 4, ml: 5, mt: 5 }}
+              >
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  color="primary"
+                  label="First Name"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  fullWidth
+                />
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  color="primary"
+                  label="Last Name"
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  fullWidth
+                />
+              </Stack>
+              <TextField
+                type="email"
+                variant="outlined"
+                color="primary"
+                label="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                fullWidth
+                sx={{ mb: 4, ml: 5 }}
+              />
+              {/* <TextField
             type="password"
             variant="outlined"
             color="primary"
@@ -119,19 +135,21 @@ export default function Profile() {
             fullWidth
             sx={{ mb: 4, ml: 5 }}
           /> */}
-          <TextField
-            type="date"
-            variant="outlined"
-            color="primary"
-            onChange={(e) => setDateOfBirth(e.target.value)}
-            value={dateOfBirth}
-            fullWidth
-            sx={{ mb: 4, ml: 5 }}
-          />
-          <Button sx={{ ml: 5 }} variant="contained" type="submit">
-            Submit
-          </Button>
-        </form>
+              <TextField
+                type="date"
+                variant="outlined"
+                color="primary"
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                value={dateOfBirth}
+                fullWidth
+                sx={{ mb: 4, ml: 5 }}
+              />
+              <Button sx={{ ml: 5 }} variant="contained" type="submit">
+                Submit
+              </Button>
+            </form>
+          </Grid>
+        </Grid>
       </Box>
     </React.Fragment>
   );

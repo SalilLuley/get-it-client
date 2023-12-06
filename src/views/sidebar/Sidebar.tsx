@@ -14,17 +14,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import FaceIcon from "@mui/icons-material/Face";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import { Autocomplete, TextField } from "@mui/material";
 import axios from "axios";
 import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { ROUTES } from "../../route/Constants";
-
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import PersonIcon from "@mui/icons-material/Person";
 const drawerWidth = 240;
 
 const Search = styled("div")(({ theme }) => ({
@@ -122,7 +120,7 @@ export default function ResponsiveDrawer() {
       ></Box>
 
       <List>
-        {["Dashboard", "Profile", "Settings"].map((text, index) => (
+        {["Dashboard", "Profile"].map((text, index) => (
           <ListItem
             sx={{ color: "black" }}
             key={text}
@@ -134,7 +132,7 @@ export default function ResponsiveDrawer() {
                 {index === 0 ? (
                   <DashboardIcon />
                 ) : index === 1 ? (
-                  <FaceIcon />
+                  <PersonIcon />
                 ) : (
                   <SettingsApplicationsIcon />
                 )}
@@ -145,6 +143,25 @@ export default function ResponsiveDrawer() {
         ))}
       </List>
       <Divider sx={{ bgcolor: "white" }} />
+      <List>
+        {["Owners"].map((text, index) => (
+          <ListItem
+            sx={{ color: "black" }}
+            key={text}
+            onClick={() => handlePageChange(text)}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <AdminPanelSettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider sx={{ bgcolor: "white" }} />
+
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />

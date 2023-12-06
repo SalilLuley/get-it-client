@@ -10,6 +10,7 @@ import Profile from "./views/profile/profile";
 import "./App.css";
 import OrderDetailsPage from "./views/detail/Detail";
 import Settings from "./views/settings/Settings";
+import OwnerAddParking from "./views/owners/addParking/AddParking";
 
 const defaultTheme = createTheme();
 
@@ -36,6 +37,7 @@ function App() {
             <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
             <Route path={ROUTES.DETAIL} element={<OrderDetailsPage />}></Route>
             <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
+            <Route path={ROUTES.OWNER} element={<OwnerAddParking />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
