@@ -6,5 +6,6 @@ export enum ROUTES {
   PROFILE = "/profile",
   DETAIL = "/detail",
   SETTINGS = "/settings",
+  MYORDERS = "/My Orders",
   OWNER = "/owners",
 }

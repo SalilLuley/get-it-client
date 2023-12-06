@@ -13,4 +13,7 @@ export const NETWORKING_CONTSTANTS = {
     },
     CREATE: "parking-spot/create",
   },
+  ORDERS: {
+    GET_MY_ORDERS: "order/get-all",
+  },
 };

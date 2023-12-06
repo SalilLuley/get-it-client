@@ -23,6 +23,8 @@ import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { ROUTES } from "../../route/Constants";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PersonIcon from "@mui/icons-material/Person";
+import DriveEtaIcon from "@mui/icons-material/DriveEta";
+
 const drawerWidth = 240;
 
 const Search = styled("div")(({ theme }) => ({
@@ -131,7 +133,7 @@ export default function ResponsiveDrawer() {
       ></Box>
 
       <List>
-        {["Dashboard", "Profile"].map((text, index) => (
+        {["Dashboard", "My Orders", "Profile"].map((text, index) => (
           <ListItem
             sx={{ color: "black" }}
             key={text}
@@ -143,9 +145,9 @@ export default function ResponsiveDrawer() {
                 {index === 0 ? (
                   <DashboardIcon />
                 ) : index === 1 ? (
-                  <PersonIcon />
+                  <DriveEtaIcon />
                 ) : (
-                  <SettingsApplicationsIcon />
+                  <PersonIcon />
                 )}
               </ListItemIcon>
               <ListItemText primary={text} />
