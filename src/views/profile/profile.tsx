@@ -3,6 +3,7 @@ import {
   Button,
   Container,
   Grid,
+  Modal,
   Stack,
   TextField,
   Typography,
@@ -26,6 +27,11 @@ export default function Profile() {
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
 
+  const [openSuccess, setSuccessOpen] = useState(false);
+
+  const handleSuccessOpen = () => setSuccessOpen(true);
+  const handleSuccessClose = () => setSuccessOpen(false);
+
   useEffect(() => {
     axios
       .get(
@@ -36,8 +42,8 @@ export default function Profile() {
       .then((data: any) => {
         setFirstName(data.data.data.firstname);
         setLastName(data.data.data.lastname);
-        if (!data.data.data.dob) setDateOfBirth(data.data.data.dob);
-        setEmail(data.data.data.email);
+        if (data.data.data.dob !== null) setDateOfBirth(data.data.data.dob);
+        if (data.data.data.email !== null) setEmail(data.data.data.email);
       })
       .catch((error) => {
         if (error.code === "ERR_BAD_REQUEST") {
@@ -60,7 +66,9 @@ export default function Profile() {
         },
         config
       )
-      .then((data: any) => {})
+      .then((data: any) => {
+        handleSuccessOpen();
+      })
       .catch((error) => {});
   }
 
@@ -142,6 +150,33 @@ export default function Profile() {
                 Submit
               </Button>
             </form>
+            <Modal
+              open={openSuccess}
+              onClose={handleSuccessClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  border: "2px solid #000",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Success
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  User updated successfully.
+                </Typography>
+              </Box>
+            </Modal>
           </Grid>
         </Grid>
       </Box>

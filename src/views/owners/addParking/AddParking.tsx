@@ -40,15 +40,19 @@ export default function OwnerAddParking() {
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [open, setOpen] = useState(false);
+  const [openSuccess, setSuccessOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleSuccessOpen = () => setSuccessOpen(true);
+  const handleSuccessClose = () => setSuccessOpen(false);
 
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
 
     axios
-      .patch(
+      .post(
         NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.PARKING.CREATE,
         {
           title: title === "" ? undefined : title,
@@ -56,10 +60,14 @@ export default function OwnerAddParking() {
           body: body === "" ? undefined : body,
           postalCode: postalCode === "" ? undefined : postalCode,
           address: address === "" ? undefined : address,
+          latitude: 0,
+          longitude: 0,
         },
         config
       )
-      .then((data: any) => {})
+      .then((data: any) => {
+        handleSuccessOpen();
+      })
       .catch((error) => {
         handleOpen();
       });
@@ -164,6 +172,33 @@ export default function OwnerAddParking() {
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                   Only users with role Owners can add parking spots, please
                   contact admin to change your role.
+                </Typography>
+              </Box>
+            </Modal>
+            <Modal
+              open={openSuccess}
+              onClose={handleSuccessClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  border: "2px solid #000",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Success
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Parking added successfully.
                 </Typography>
               </Box>
             </Modal>
