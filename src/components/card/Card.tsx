@@ -57,7 +57,17 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
               4.8
             </Typography>
           </Box>
-          <Typography variant="subtitle1" color="text" component="div">
+          <Typography
+            variant="subtitle1"
+            color="text"
+            component="div"
+            // noWrap
+            sx={{
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              // whiteSpace: "nowrap",
+            }}
+          >
             {parkingSpot.body}
           </Typography>
         </CardContent>

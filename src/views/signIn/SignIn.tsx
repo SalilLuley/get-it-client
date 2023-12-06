@@ -16,7 +16,7 @@ import axios from "axios";
 import { Alert, AlertTitle } from "@mui/material";
 import { useState } from "react";
 import { ROUTES } from "../../route/Constants";
-import { NETWORKING_CONTSTANTS } from "../../network/Common";
+import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 
 function Copyright(props: any) {
   return (

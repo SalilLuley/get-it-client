@@ -22,7 +22,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { Autocomplete, TextField } from "@mui/material";
 import axios from "axios";
-import { NETWORKING_CONTSTANTS } from "../../network/Common";
+import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { ROUTES } from "../../route/Constants";
 
 const drawerWidth = 240;
