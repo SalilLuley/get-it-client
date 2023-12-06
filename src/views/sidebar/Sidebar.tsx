@@ -20,6 +20,10 @@ import FaceIcon from "@mui/icons-material/Face";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import { Autocomplete, TextField } from "@mui/material";
+import axios from "axios";
+import { NETWORKING_CONTSTANTS } from "../../network/Common";
+import { ROUTES } from "../../route/Constants";
 
 const drawerWidth = 240;
 
@@ -66,6 +70,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function ResponsiveDrawer() {
   const navigate = useNavigate();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -77,6 +86,33 @@ export default function ResponsiveDrawer() {
     setMobileOpen(!mobileOpen);
   };
 
+  const [parkingSpots, setParkingSpots] = React.useState([]);
+
+  React.useEffect(() => {
+    axios
+      .get(
+        NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.PARKING.GET_ALL,
+        config
+      )
+      .then((data: any) => {
+        const parkingSpots: any[] = data.data.data;
+        const spots: any = parkingSpots.map((item: any) => {
+          console.log("item", item.title);
+          return {
+            label: item.title,
+            id: item.id,
+          };
+        });
+        setParkingSpots(spots);
+      })
+      .catch((error) => {
+        console.log("Error me", error);
+        if (error.code === "ERR_BAD_REQUEST") {
+          navigate(ROUTES.SIGN_IN, { replace: true });
+        }
+      });
+  }, []);
+
   const drawer = (
     <Box sx={{ height: "100vh" }}>
       <Box
@@ -85,7 +121,6 @@ export default function ResponsiveDrawer() {
         sx={{ width: drawerWidth, p: 3 }}
       ></Box>
 
-      {/* <Divider /> */}
       <List>
         {["Dashboard", "Profile", "Settings"].map((text, index) => (
           <ListItem
@@ -124,7 +159,7 @@ export default function ResponsiveDrawer() {
       <CssBaseline />
       <AppBar
         position="fixed"
-        // elevation={0}
+        elevation={0}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
@@ -140,16 +175,22 @@ export default function ResponsiveDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Search sx={{ m: 2 }}>
-            <SearchIconWrapper>
-              <SearchIcon sx={{ color: "grey" }} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              sx={{ color: "grey" }}
-              placeholder="Location"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <Autocomplete
+            disablePortal
+            onChange={(event: any, newValue: any) => {
+              console.log("newValue", newValue);
+              navigate(ROUTES.DETAIL, {
+                state: { id: newValue.id },
+                replace: true,
+              });
+            }}
+            id="combo-box-demo"
+            options={parkingSpots}
+            sx={{ width: 300, mt: 1, ml: 2 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Locations" />
+            )}
+          />
         </Toolbar>
       </AppBar>
       <Box

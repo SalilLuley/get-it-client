@@ -57,7 +57,7 @@ const OrderDetailsPage = () => {
         height: "100vh",
         p: 2,
         ml: { sm: "240px", xs: 0 },
-        mt: { sm: "50px", xs: "50px", lg: "50px", md: "50px" },
+        mt: { sm: "80px", xs: "80px", lg: "80px", md: "80px" },
       }}
     >
       <Card sx={{ maxWidth: "90vh", width: "100%", m: "auto" }}>
