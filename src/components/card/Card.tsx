@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import fav from "../../assets/fav.png";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
+import { Chip } from "@mui/material";
 
 interface ParkingSpot {
   id: number;
@@ -16,6 +17,7 @@ interface ParkingSpot {
   longitude: number;
   address: string;
   postalCode: string;
+  status: string;
 }
 
 export default function ActionAreaCard(parkingSpot: ParkingSpot) {
@@ -23,7 +25,13 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
 
   return (
     <Card
-      sx={{ display: "flex", m: 1, height: { xs: "40vh" }, borderRadius: 2 }}
+      sx={{
+        display: "flex",
+        m: 1,
+        height: { xs: "auto", sm: "40vh" },
+        borderRadius: 2,
+        flexDirection: { xs: "column", sm: "row" },
+      }}
     >
       <CardMedia
         onClick={() => {
@@ -31,7 +39,7 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
         }}
         component="img"
         sx={{
-          width: "40%",
+          width: { xs: "100%", sm: "40%" },
           height: { sm: "auto", xs: "40%" },
           p: 2,
           borderRadius: 5,
@@ -46,8 +54,15 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
             textOverflow={"ellipsis"}
             component="div"
             variant="h5"
+            sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            {parkingSpot.title}
+            <span>{parkingSpot.title}</span>
+            <Chip
+              label={parkingSpot.status}
+              color={parkingSpot.status === "BOOKED" ? "secondary" : "primary"}
+              size="small"
+              sx={{ ml: 1 }}
+            />
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box component="img" src={fav} />

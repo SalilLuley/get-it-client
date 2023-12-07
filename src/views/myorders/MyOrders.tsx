@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardContent,
+  Chip,
   Container,
   Grid,
   Typography,
@@ -20,6 +21,7 @@ export interface Order {
   parkingSpotId: number;
   price: number;
   parkingSpot: ParkingSpot;
+  status: string;
 }
 
 export interface ParkingSpot {
@@ -57,6 +59,7 @@ export default function MyOrders() {
             parkingSpotId: order.parkingSpotId,
             price: order.price,
             parkingSpot: order.parkingSpot,
+            status: order.status,
           };
         });
         setOrders(myOrders);
@@ -79,17 +82,28 @@ export default function MyOrders() {
         }}
       >
         <Grid sx={{ backgroundColor: "#F6F6F6" }} flex={1} container>
-          <Grid item xs={11}>
+          <Grid item xs={12}>
             <Container sx={{ mt: 5, mb: 5, ml: 2 }}>
               <Typography variant="h4" component="h1" gutterBottom>
                 My Order Details
               </Typography>
             </Container>
             {orders.map((order, index) => (
-              <Card key={index} sx={{ minWidth: 275, m: 5 }}>
+              <Card key={index} sx={{ minWidth: "auto", m: 5 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div">
-                    {`${order.parkingSpot.title}`}
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span>{order.parkingSpot.title}</span>
+                    <Chip
+                      label={order.status}
+                      color={
+                        order.status === "ONGOING" ? "secondary" : "primary"
+                      }
+                      size="small"
+                    />
                   </Typography>
                   <Typography variant="body2">
                     {`${order.parkingSpot.address}`}

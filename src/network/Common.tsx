@@ -7,7 +7,8 @@ export const NETWORKING_CONTSTANTS = {
   },
   PARKING: {
     GET_ONE: "parking-spot/get-one/",
-    GET_ALL: "parking-spot/get-all",
+    GET_ALL: "parking-spot/get-all/",
+    GET_ALL_AUTOCOMPLETE: "parking-spot/get-all-autcomplete",
     FILTER: {
       RENT: "parking-spot/filter",
     },

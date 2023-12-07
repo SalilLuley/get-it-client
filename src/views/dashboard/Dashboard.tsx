@@ -2,11 +2,15 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Box,
   CssBaseline,
   List,
   ListItem,
+  Pagination,
   Slider,
   TextField,
   Typography,
@@ -17,7 +21,7 @@ import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
-
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -25,38 +29,41 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-// const style = {
-//   position: "absolute" as "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 400,
-//   bgcolor: "background.paper",
-//   border: "2px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-// };
-
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [, setOpen] = useState(false);
+  const [parkingSpots, setParkingSpots] = useState([]);
+  const [setSearchParkingSpots, setSearchSetParkingSpots] = useState([]);
+
+  const [postalCode, setPostalCode] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const recordsPerPage = 2;
 
   const config = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   };
-  const navigate = useNavigate();
-  const [parkingSpots, setParkingSpots] = useState([]);
-  const [setSearchParkingSpots, setSearchSetParkingSpots] = useState([]);
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const handlePostalCodeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPostalCode(event.target.value);
+  };
 
   useEffect(() => {
     axios
       .get(
-        NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.PARKING.GET_ALL,
+        NETWORKING_CONTSTANTS.BASE_URL +
+          NETWORKING_CONTSTANTS.PARKING.GET_ALL_AUTOCOMPLETE,
         config
       )
       .then((data: any) => {
-        setParkingSpots(data.data.data);
         const parkingSpots: any[] = data.data.data;
         const spots: any = parkingSpots.map((item: any) => {
           return {
@@ -72,7 +79,29 @@ export default function Dashboard() {
           navigate(ROUTES.SIGN_IN, { replace: true });
         }
       });
-  }, []);
+  }, [page]);
+
+  useEffect(() => {
+    axios
+      .get(
+        NETWORKING_CONTSTANTS.BASE_URL +
+          NETWORKING_CONTSTANTS.PARKING.GET_ALL +
+          `${page}`,
+        config
+      )
+      .then((data: any) => {
+        const totalRecords = data.data.data[0].total;
+        console.log(totalRecords);
+        setParkingSpots(data.data.data);
+        setTotalPages(Math.ceil(totalRecords / recordsPerPage));
+      })
+      .catch((error) => {
+        if (error.code === "ERR_BAD_REQUEST") {
+          setOpen(true);
+          navigate(ROUTES.SIGN_IN, { replace: true });
+        }
+      });
+  }, [page]);
 
   const handleChange = (_: Event, newValue: number | number[]) => {
     axios
@@ -106,8 +135,8 @@ export default function Dashboard() {
           ml: { sm: "240px", xs: 0 },
         }}
       >
-        <Grid flex={1} sx={{ ml: 2, mb: 10 }} container spacing={2}>
-          <Grid item xs={12} mt={2}>
+        <Grid flex={1} container spacing={2}>
+          <Grid item xs={12}>
             <Autocomplete
               disablePortal
               onChange={(_: any, newValue: any) => {
@@ -118,35 +147,99 @@ export default function Dashboard() {
               }}
               id="combo-box-demo"
               options={setSearchParkingSpots}
-              sx={{ width: { xs: "90%", sm: "60%" }, mb: 2 }}
+              sx={{ p: 2, width: { xs: "100%", sm: "91.66%" } }}
               renderInput={(params) => (
                 <TextField {...params} label="Locations" />
               )}
             />
-            <Typography color="#3e4958" component="div" variant="body2">
-              {/* 400+ Parking Locations */}
-            </Typography>
-            <Typography component="div" variant="h5">
+            <Typography
+              component="div"
+              variant="h5"
+              align="left"
+              sx={{ ml: { xs: 2, sm: 2 } }}
+            >
               Live From Space
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Box sx={{ width: { xs: "75%", sm: "25%" } }}>
-              <Typography component="div" variant="body2">
-                Filter By Rent
-              </Typography>
-              <Slider
-                defaultValue={30}
-                valueLabelDisplay="auto"
-                step={10}
-                marks
-                min={10}
-                max={110}
-                onChange={handleChange}
-              />
+            <Box
+              display={{ xs: "flex", sm: "flex" }}
+              justifyContent="space-between"
+              alignItems="center"
+              pl={2}
+              pr={2}
+            >
+              <Accordion
+                sx={{
+                  width: { xs: "100%", sm: "91.66%" },
+                  border: "1px solid #e0e0e0",
+                  borderRadius: 2,
+                  backgroundColor: "#F6F6F6",
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  id="filters-header"
+                >
+                  <Typography variant="body1">Filters</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Accordion
+                    sx={{
+                      boxShadow: "none",
+                      "&:before": { display: "none" },
+                      "&:not(:last-child)": { borderBottom: 0 },
+                    }}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>Rent Range</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Slider
+                        defaultValue={30}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        step={10}
+                        marks
+                        min={10}
+                        max={110}
+                        onChange={handleChange}
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion
+                    sx={{
+                      boxShadow: "none",
+                      "&:before": { display: "none" },
+                      "&:not(:last-child)": { borderBottom: 0 },
+                    }}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel2a-content"
+                      id="panel2a-header"
+                    >
+                      <Typography>Postal Code</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <TextField
+                        value={postalCode}
+                        onChange={handlePostalCodeChange}
+                        label="Postal Code"
+                        variant="outlined"
+                        size="small"
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                </AccordionDetails>
+              </Accordion>
             </Box>
           </Grid>
-          <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
+          <Grid item xs={12} sm={11} md={11} lg={11} xl={11}>
             <Item>
               <List sx={{ backgroundColor: "#F6F6F6" }}>
                 {parkingSpots.map((spot: any) => (
@@ -154,30 +247,15 @@ export default function Dashboard() {
                     <ActionAreaCard {...spot} />
                   </ListItem>
                 ))}
+                <Pagination
+                  count={totalPages}
+                  page={page}
+                  onChange={handlePageChange}
+                />
               </List>
             </Item>
           </Grid>
-          {/* <Grid item xs={0} sm={6} md={6} lg={6} xl={6}>
-            <Item>
-              <MapComponent></MapComponent>
-            </Item>
-          </Grid> */}
         </Grid>
-
-        {/* <Modal
-          open={open}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Session Expired
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Please relogin
-            </Typography>
-          </Box>
-        </Modal> */}
       </Box>
     </CssBaseline>
   );
