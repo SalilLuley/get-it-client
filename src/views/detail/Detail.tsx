@@ -59,26 +59,28 @@ const OrderDetailsPage = () => {
         }
       });
 
-    axios
-      .get(
-        NETWORKING_CONTSTANTS.BASE_URL +
-          NETWORKING_CONTSTANTS.ORDERS.GET_MY_ORDERS,
-        config
-      )
-      .then((data: any) => {
-        const myOrders = data.data.data.filter(
-          (order: any) => order.status === "ONGOING"
-        );
-        console.log(myOrders);
-        if (myOrders.length > 0) {
-          setDisableBtn(true);
-        }
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
-      });
+    if (userRole !== "owner") {
+      axios
+        .get(
+          NETWORKING_CONTSTANTS.BASE_URL +
+            NETWORKING_CONTSTANTS.ORDERS.GET_MY_ORDERS,
+          config
+        )
+        .then((data: any) => {
+          const myOrders = data.data.data.filter(
+            (order: any) => order.status === "ONGOING"
+          );
+          console.log(myOrders);
+          if (myOrders.length > 0) {
+            setDisableBtn(true);
+          }
+        })
+        .catch((error) => {
+          if (error.code === "ERR_BAD_REQUEST") {
+            navigate(ROUTES.SIGN_IN, { replace: true });
+          }
+        });
+    }
   }, []);
 
   const handleReserveNow = () => {

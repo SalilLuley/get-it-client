@@ -56,6 +56,26 @@ export default function Dashboard() {
     axios
       .get(
         NETWORKING_CONTSTANTS.BASE_URL +
+          NETWORKING_CONTSTANTS.PARKING.GET_ALL +
+          `${page}`,
+        config
+      )
+      .then((data: any) => {
+        const totalRecords = data.data.data[0].total;
+        console.log(totalRecords);
+        setParkingSpots(data.data.data);
+        setTotalPages(Math.ceil(totalRecords / recordsPerPage));
+      })
+      .catch((error) => {
+        if (error.code === "ERR_BAD_REQUEST") {
+          setOpen(true);
+          navigate(ROUTES.SIGN_IN, { replace: true });
+        }
+      });
+
+    axios
+      .get(
+        NETWORKING_CONTSTANTS.BASE_URL +
           NETWORKING_CONTSTANTS.PARKING.GET_ALL_AUTOCOMPLETE,
         config
       )
@@ -68,28 +88,6 @@ export default function Dashboard() {
           };
         });
         setSearchSetParkingSpots(spots);
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          setOpen(true);
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
-      });
-  }, [page]);
-
-  useEffect(() => {
-    axios
-      .get(
-        NETWORKING_CONTSTANTS.BASE_URL +
-          NETWORKING_CONTSTANTS.PARKING.GET_ALL +
-          `${page}`,
-        config
-      )
-      .then((data: any) => {
-        const totalRecords = data.data.data[0].total;
-        console.log(totalRecords);
-        setParkingSpots(data.data.data);
-        setTotalPages(Math.ceil(totalRecords / recordsPerPage));
       })
       .catch((error) => {
         if (error.code === "ERR_BAD_REQUEST") {
