@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
 import { NETWORKING_CONTSTANTS } from "../../../network/Common";
 
 const style = {
@@ -32,7 +31,6 @@ export default function OwnerAddParking() {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   };
-  const navigate = useNavigate();
 
   const [title, settitle] = useState("");
   const [rent, setRent] = useState(0);
@@ -65,10 +63,10 @@ export default function OwnerAddParking() {
         },
         config
       )
-      .then((data: any) => {
+      .then(() => {
         handleSuccessOpen();
       })
-      .catch((error) => {
+      .catch(() => {
         handleOpen();
       });
   }

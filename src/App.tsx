@@ -31,6 +31,7 @@ function App() {
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <Routes>
+          <Route path={"/"} element={<PrivateRoute />} />
           <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={ROUTES.DEFAULT} element={<PrivateRoute />}></Route>

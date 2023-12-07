@@ -7,7 +7,6 @@ import {
   CssBaseline,
   List,
   ListItem,
-  Modal,
   Slider,
   TextField,
   Typography,
@@ -39,7 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
 // };
 
 export default function Dashboard() {
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
 
   const config = {
     headers: {
@@ -75,7 +74,7 @@ export default function Dashboard() {
       });
   }, []);
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
+  const handleChange = (_: Event, newValue: number | number[]) => {
     axios
       .post(
         NETWORKING_CONTSTANTS.BASE_URL +
@@ -111,7 +110,7 @@ export default function Dashboard() {
           <Grid item xs={12} mt={2}>
             <Autocomplete
               disablePortal
-              onChange={(event: any, newValue: any) => {
+              onChange={(_: any, newValue: any) => {
                 navigate(ROUTES.DETAIL, {
                   state: { id: newValue.id },
                   replace: true,

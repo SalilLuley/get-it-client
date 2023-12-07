@@ -66,10 +66,10 @@ export default function Profile() {
         },
         config
       )
-      .then((data: any) => {
+      .then((_: any) => {
         handleSuccessOpen();
       })
-      .catch((error) => {});
+      .catch((_) => {});
   }
 
   return (

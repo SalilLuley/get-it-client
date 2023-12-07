@@ -20,9 +20,15 @@ const OrderDetailsPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const userRole = localStorage.getItem("role");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [openError, setOpenError] = useState(false);
+
+  const handleErrorOpen = () => setOpenError(true);
+  const handleErrorClose = () => setOpenError(false);
 
   const config = {
     headers: {
@@ -51,6 +57,10 @@ const OrderDetailsPage = () => {
   }, []);
 
   const handleReserveNow = () => {
+    if (userRole !== "user") {
+      handleErrorOpen();
+      return;
+    }
     axios
       .post(
         NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.ORDERS.CREATE,
@@ -60,7 +70,7 @@ const OrderDetailsPage = () => {
         },
         config
       )
-      .then((data: any) => {
+      .then(() => {
         handleOpen();
       })
       .catch((error) => {
@@ -154,6 +164,34 @@ const OrderDetailsPage = () => {
               <Button variant="outlined" onClick={handleClose}>
                 Close
               </Button>
+            </Box>
+          </Modal>
+          <Modal
+            open={openError}
+            onClose={handleErrorClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: { xs: "80%", sm: "40%" },
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Unauthorised Access
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                You do not have access to book as owner, you can only add
+                Parking Slots.
+              </Typography>
             </Box>
           </Modal>
         </Grid>
