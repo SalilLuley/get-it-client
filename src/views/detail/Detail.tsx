@@ -5,6 +5,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Container,
   Grid,
   Modal,
@@ -17,15 +18,17 @@ import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { ROUTES } from "../../route/Constants";
 
 const OrderDetailsPage = () => {
-  const { state } = useLocation();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const { state } = useLocation();
   const userRole = localStorage.getItem("role");
+
+  const [open, setOpen] = useState(false);
+  const [parkingSpot, setParkingSpot] = useState({});
+  const [openError, setOpenError] = useState(false);
+  const [spotStatus, setSpotStatus] = useState("AVAILABLE");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [openError, setOpenError] = useState(false);
 
   const handleErrorOpen = () => setOpenError(true);
   const handleErrorClose = () => setOpenError(false);
@@ -36,8 +39,6 @@ const OrderDetailsPage = () => {
     },
   };
 
-  const [parkingSpot, setParkingSpot] = useState({});
-
   useEffect(() => {
     axios
       .get(
@@ -47,6 +48,7 @@ const OrderDetailsPage = () => {
         config
       )
       .then((data: any) => {
+        setSpotStatus(data.data.data.status);
         setParkingSpot(data.data.data);
       })
       .catch((error) => {
@@ -108,8 +110,19 @@ const OrderDetailsPage = () => {
               alt={(parkingSpot as { title: string })["title"]}
             />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {(parkingSpot as { title: string })["title"]}
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span>{(parkingSpot as { title: string })["title"]}</span>
+                <Chip
+                  label={spotStatus}
+                  color={spotStatus === "BOOKED" ? "secondary" : "primary"}
+                  size="small"
+                  sx={{ ml: 1 }}
+                />
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 {(parkingSpot as { body: string })["body"]}
@@ -129,7 +142,8 @@ const OrderDetailsPage = () => {
                 onClick={handleReserveNow}
                 size="small"
                 variant="contained"
-                color="primary"
+                color={spotStatus === "AVAILABLE" ? "primary" : "secondary"}
+                disabled={spotStatus !== "AVAILABLE" || userRole !== "user"}
               >
                 Reserve Now
               </Button>
