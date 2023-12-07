@@ -36,6 +36,8 @@ export default function Dashboard() {
   const [setSearchParkingSpots, setSearchSetParkingSpots] = useState([]);
 
   const [postalCode, setPostalCode] = useState("");
+  const [rent, setRent] = useState(110);
+
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const recordsPerPage = 2;
@@ -48,12 +50,6 @@ export default function Dashboard() {
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-  };
-
-  const handlePostalCodeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPostalCode(event.target.value);
   };
 
   useEffect(() => {
@@ -103,14 +99,42 @@ export default function Dashboard() {
       });
   }, [page]);
 
-  const handleChange = (_: Event, newValue: number | number[]) => {
+  const handleRentRangeChange = (_: Event, newValue: number | number[]) => {
+    setRent(newValue as number);
     axios
       .post(
         NETWORKING_CONTSTANTS.BASE_URL +
           NETWORKING_CONTSTANTS.PARKING.FILTER.RENT,
         {
-          postalCode: "",
+          postalCode,
           rent: newValue ?? 100,
+        },
+        config
+      )
+      .then((data: any) => {
+        setParkingSpots(data.data.data);
+      })
+      .catch((error) => {
+        if (error.code === "ERR_BAD_REQUEST") {
+          navigate(ROUTES.SIGN_IN, { replace: true });
+        }
+      });
+  };
+
+  const handlePostalCodeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const postalCode = event.target.value;
+
+    setPostalCode(postalCode);
+
+    axios
+      .post(
+        NETWORKING_CONTSTANTS.BASE_URL +
+          NETWORKING_CONTSTANTS.PARKING.FILTER.RENT,
+        {
+          postalCode,
+          rent: rent ?? 100,
         },
         config
       )
@@ -207,7 +231,7 @@ export default function Dashboard() {
                         marks
                         min={10}
                         max={110}
-                        onChange={handleChange}
+                        onChange={handleRentRangeChange}
                       />
                     </AccordionDetails>
                   </Accordion>
