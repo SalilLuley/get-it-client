@@ -16,40 +16,34 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PersonIcon from "@mui/icons-material/Person";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import { Modal, Typography, Button } from "@mui/material";
+import LocalParkingIcon from "@mui/icons-material/LocalParking";
 
 const drawerWidth = 240;
 
+enum SidebarItems {
+  Dashboard = "Dashboard",
+  MyOrders = "My Orders",
+  Profile = "Profile",
+  MyParkingSlots = "My Parking Slots",
+  OngoingOwners = "Ongoing Orders",
+}
+
 export default function ResponsiveDrawer() {
+  const userRole = localStorage.getItem("role");
+
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const [openError, setOpenError] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleErrorOpen = () => setOpenError(true);
-  const handleErrorClose = () => setOpenError(false);
-
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handlePageChange = (text: string) => {
-    const userRole = localStorage.getItem("role");
-    const restrictedPagesOwners = ["Owners", "Owner Orders"];
-    const restrictedPagesUsers = ["My Orders"];
-
-    if (restrictedPagesOwners.includes(text) && userRole !== "owner") {
-      handleErrorOpen();
-      return;
-    }
-
-    if (restrictedPagesUsers.includes(text) && userRole !== "user") {
-      handleErrorOpen();
-      return;
-    }
     navigate(text);
   };
 
@@ -71,7 +65,14 @@ export default function ResponsiveDrawer() {
       ></Box>
 
       <List>
-        {["Dashboard", "My Orders", "Profile"].map((text, index) => (
+        {(userRole === "user"
+          ? [
+              SidebarItems.Dashboard,
+              SidebarItems.MyOrders,
+              SidebarItems.Profile,
+            ]
+          : [SidebarItems.Dashboard, SidebarItems.Profile]
+        ).map((text, index) => (
           <ListItem
             sx={{ color: "black" }}
             key={text}
@@ -83,7 +84,7 @@ export default function ResponsiveDrawer() {
                 {index === 0 ? (
                   <DashboardIcon />
                 ) : index === 1 ? (
-                  <DriveEtaIcon />
+                  <AccountBoxIcon />
                 ) : (
                   <PersonIcon />
                 )}
@@ -94,23 +95,27 @@ export default function ResponsiveDrawer() {
         ))}
       </List>
       <Divider sx={{ bgcolor: "white" }} />
-      <List>
-        {["Owners", "Owner Orders"].map((text, index) => (
-          <ListItem
-            sx={{ color: "black" }}
-            key={index}
-            onClick={() => handlePageChange(text)}
-            disablePadding
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <AdminPanelSettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      {userRole !== "user" && (
+        <List>
+          {[SidebarItems.MyParkingSlots, SidebarItems.OngoingOwners].map(
+            (text, index) => (
+              <ListItem
+                sx={{ color: "black" }}
+                key={index}
+                onClick={() => handlePageChange(text)}
+                disablePadding
+              >
+                <ListItemButton>
+                  <ListItemIcon>
+                    {index === 0 ? <LocalParkingIcon /> : <DriveEtaIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            )
+          )}
+        </List>
+      )}
       <Divider sx={{ bgcolor: "white" }} />
 
       <ListItemButton onClick={handleOpen}>
@@ -217,35 +222,6 @@ export default function ResponsiveDrawer() {
             <Button sx={{ ml: 2 }} variant="outlined" onClick={handleClose}>
               No
             </Button>
-          </Box>
-        </Modal>
-
-        <Modal
-          open={openError}
-          onClose={handleErrorClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: { xs: "80%", sm: "40%" },
-              bgcolor: "background.paper",
-              border: "2px solid #000",
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Unauthorised Access
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You do not have access to this page, please contact admin to know
-              more about your roles.
-            </Typography>
           </Box>
         </Modal>
       </Box>

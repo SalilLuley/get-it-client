@@ -41,10 +41,13 @@ function App() {
             <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
             <Route path={ROUTES.DETAIL} element={<OrderDetailsPage />}></Route>
             <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
-            <Route path={ROUTES.OWNER} element={<OwnerAddParking />}></Route>
+            <Route
+              path={ROUTES.MY_PARKING_SLOTS}
+              element={<OwnerAddParking />}
+            ></Route>
             <Route path={ROUTES.MYORDERS} element={<MyOrders />}></Route>
             <Route
-              path={ROUTES.OWNER_ORDERS}
+              path={ROUTES.ONGOING_ORDERS}
               element={<MyOrdersOwner />}
             ></Route>
           </Route>
