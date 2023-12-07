@@ -128,7 +128,7 @@ const OrderDetailsPage = () => {
           </Container>
           <Card sx={{ m: "auto", mb: 5, p: 2, ml: 3, boxShadow: 3 }}>
             <CardMedia
-              sx={{ height: { xs: "auto", sm: 400 } }}
+              sx={{ height: { xs: "auto", sm: "50vh" } }}
               component="img"
               image="https://info.hignell.com/hubfs/HR/Images/Blog%20Images/reserved%20parking%20spot_10441780.jpg"
               alt={(parkingSpot as { title: string })["title"]}
