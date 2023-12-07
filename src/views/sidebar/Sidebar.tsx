@@ -38,7 +38,7 @@ export default function ResponsiveDrawer() {
 
   const handlePageChange = (text: string) => {
     const userRole = localStorage.getItem("role");
-    const restrictedPagesOwners = ["Owners"];
+    const restrictedPagesOwners = ["Owners", "Owner Orders"];
     const restrictedPagesUsers = ["My Orders"];
 
     if (restrictedPagesOwners.includes(text) && userRole !== "owner") {
@@ -95,7 +95,7 @@ export default function ResponsiveDrawer() {
       </List>
       <Divider sx={{ bgcolor: "white" }} />
       <List>
-        {["Owners"].map((text, index) => (
+        {["Owners", "Owner Orders"].map((text, index) => (
           <ListItem
             sx={{ color: "black" }}
             key={index}

@@ -27,6 +27,8 @@ const OrderDetailsPage = () => {
   const [openError, setOpenError] = useState(false);
   const [spotStatus, setSpotStatus] = useState("AVAILABLE");
 
+  const [disableBtn, setDisableBtn] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -56,6 +58,27 @@ const OrderDetailsPage = () => {
           navigate(ROUTES.SIGN_IN, { replace: true });
         }
       });
+
+    axios
+      .get(
+        NETWORKING_CONTSTANTS.BASE_URL +
+          NETWORKING_CONTSTANTS.ORDERS.GET_MY_ORDERS,
+        config
+      )
+      .then((data: any) => {
+        const myOrders = data.data.data.filter(
+          (order: any) => order.status === "ONGOING"
+        );
+        console.log(myOrders);
+        if (myOrders.length > 0) {
+          setDisableBtn(true);
+        }
+      })
+      .catch((error) => {
+        if (error.code === "ERR_BAD_REQUEST") {
+          navigate(ROUTES.SIGN_IN, { replace: true });
+        }
+      });
   }, []);
 
   const handleReserveNow = () => {
@@ -67,7 +90,7 @@ const OrderDetailsPage = () => {
       .post(
         NETWORKING_CONTSTANTS.BASE_URL + NETWORKING_CONTSTANTS.ORDERS.CREATE,
         {
-          duration: 2,
+          duration: 1,
           parkingSpotId: state.id,
         },
         config
@@ -91,7 +114,6 @@ const OrderDetailsPage = () => {
         display: "flex",
         flexDirection: "column",
         p: 2,
-        height: "100vh",
         ml: { sm: "240px", xs: 0 },
       }}
     >
@@ -143,7 +165,11 @@ const OrderDetailsPage = () => {
                 size="small"
                 variant="contained"
                 color={spotStatus === "AVAILABLE" ? "primary" : "secondary"}
-                disabled={spotStatus !== "AVAILABLE" || userRole !== "user"}
+                disabled={
+                  spotStatus !== "AVAILABLE" ||
+                  userRole !== "user" ||
+                  disableBtn
+                }
               >
                 Reserve Now
               </Button>

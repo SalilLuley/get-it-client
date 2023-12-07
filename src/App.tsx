@@ -12,6 +12,7 @@ import OrderDetailsPage from "./views/detail/Detail";
 import Settings from "./views/settings/Settings";
 import OwnerAddParking from "./views/owners/addParking/AddParking";
 import MyOrders from "./views/myorders/MyOrders";
+import MyOrdersOwner from "./views/owners/addParking/myordersowner/MyOrdersOwner";
 
 const defaultTheme = createTheme();
 
@@ -42,6 +43,10 @@ function App() {
             <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
             <Route path={ROUTES.OWNER} element={<OwnerAddParking />}></Route>
             <Route path={ROUTES.MYORDERS} element={<MyOrders />}></Route>
+            <Route
+              path={ROUTES.OWNER_ORDERS}
+              element={<MyOrdersOwner />}
+            ></Route>
           </Route>
         </Routes>
       </BrowserRouter>

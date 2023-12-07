@@ -16,6 +16,8 @@ export const NETWORKING_CONTSTANTS = {
   },
   ORDERS: {
     GET_MY_ORDERS: "order/get-all",
+    GET_MY_OWNER_ORDERS: "order/get-all-owner-orders",
     CREATE: "order/create",
+    UPDATE: "order/update",
   },
 };

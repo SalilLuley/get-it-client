@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants.tsx";
+import PullToRefresh from "react-pull-to-refresh";
 
 export type MyOrders = Order[];
 
@@ -22,6 +23,7 @@ export interface Order {
   price: number;
   parkingSpot: ParkingSpot;
   status: string;
+  createdAt: string;
 }
 
 export interface ParkingSpot {
@@ -43,6 +45,7 @@ export default function MyOrders() {
     },
   };
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     axios
@@ -52,16 +55,19 @@ export default function MyOrders() {
         config
       )
       .then((data: any) => {
-        const myOrders = data.data.data.map((order: any) => {
-          return {
-            duration: order.duration,
-            orderId: order.orderId,
-            parkingSpotId: order.parkingSpotId,
-            price: order.price,
-            parkingSpot: order.parkingSpot,
-            status: order.status,
-          };
-        });
+        const myOrders = data.data.data
+          .map((order: any) => {
+            return {
+              duration: order.duration,
+              orderId: order.orderId,
+              parkingSpotId: order.parkingSpotId,
+              price: order.price,
+              parkingSpot: order.parkingSpot,
+              status: order.status,
+              createdAt: order.createdAt,
+            };
+          })
+          .reverse();
         setOrders(myOrders);
       })
       .catch((error) => {
@@ -69,7 +75,7 @@ export default function MyOrders() {
           navigate(ROUTES.SIGN_IN, { replace: true });
         }
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <React.Fragment>
@@ -88,38 +94,51 @@ export default function MyOrders() {
                 My Order Details
               </Typography>
             </Container>
-            {orders.map((order, index) => (
-              <Card key={index} sx={{ minWidth: "auto", m: 5 }}>
-                <CardContent>
-                  <Typography
-                    variant="h5"
-                    component="div"
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <span>{order.parkingSpot.title}</span>
-                    <Chip
-                      label={order.status}
-                      color={
-                        order.status === "ONGOING" ? "secondary" : "primary"
-                      }
-                      size="small"
-                    />
-                  </Typography>
-                  <Typography variant="body2">
-                    {`${order.parkingSpot.address}`}
-                  </Typography>
-                  <Typography variant="body2">
-                    {`Postal Code: ${order.parkingSpot.postalCode}`}
-                  </Typography>
-                  <Typography variant="body2">
-                    {`Duration: ${order["duration"]} hrs`}
-                  </Typography>
-                  <Typography variant="body2">
-                    {`Total: €${order["price"]}`}
-                  </Typography>
-                </CardContent>
-              </Card>
-            ))}
+            <PullToRefresh
+              onRefresh={async () => {
+                setRefresh(!refresh);
+              }}
+            >
+              {orders.map((order, index) => (
+                <Card key={index} sx={{ minWidth: "auto", m: 5 }}>
+                  <CardContent>
+                    <Typography
+                      variant="h5"
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: { xs: "1rem", sm: "1.5rem" },
+                      }}
+                    >
+                      <span>{order.parkingSpot.title}</span>
+                      <Chip
+                        label={order.status}
+                        color={
+                          order.status === "ONGOING" ? "secondary" : "primary"
+                        }
+                        size="small"
+                      />
+                    </Typography>
+                    <Typography variant="body2">
+                      {`${order.parkingSpot.address}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Postal Code: ${order.parkingSpot.postalCode}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Duration: ${order.duration} hrs`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Total: €${order.price}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Date: ${order.createdAt}`}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </PullToRefresh>
           </Grid>
         </Grid>
       </Box>
