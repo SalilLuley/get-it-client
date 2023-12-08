@@ -182,6 +182,14 @@ export default function Dashboard() {
       >
         <Grid flex={1} container spacing={2}>
           <Grid item xs={12}>
+            <Typography
+              component="div"
+              variant="h5"
+              align="left"
+              sx={{ ml: { xs: 2, sm: 2 }, mt: 3 }}
+            >
+              Live From Space
+            </Typography>
             <Autocomplete
               disablePortal
               onChange={(_: any, newValue: any) => {
@@ -197,14 +205,6 @@ export default function Dashboard() {
                 <TextField {...params} label="Locations" />
               )}
             />
-            <Typography
-              component="div"
-              variant="h5"
-              align="left"
-              sx={{ ml: { xs: 2, sm: 2 } }}
-            >
-              Live From Space
-            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Box
@@ -213,6 +213,7 @@ export default function Dashboard() {
               alignItems="center"
               pl={2}
               pr={2}
+              sx={{ mt: -2 }}
             >
               <Accordion
                 sx={{

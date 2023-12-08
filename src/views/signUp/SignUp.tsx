@@ -13,6 +13,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Alert, AlertTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../route/Constants";
 
 function Copyright(props: any) {
   return (
@@ -60,7 +61,7 @@ const SignUp = () => {
       .then(() => {
         setIsLoading(false);
         setIsLoadingError(false);
-        navigate("/");
+        navigate(ROUTES.SIGN_IN, { replace: true });
       })
       .catch(function () {
         setIsLoading(false);

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants.tsx";
 import PullToRefresh from "react-pull-to-refresh";
 import { useQuery } from "react-query";
+import NoDataImage from "../../assets/nodata.jpg";
 
 export type MyOrders = Order[];
 
@@ -103,45 +104,66 @@ export default function MyOrders() {
                 setRefresh(!refresh);
               }}
             >
-              {orders.map((order, index) => (
-                <Card key={index} sx={{ minWidth: "auto", m: 3 }}>
-                  <CardContent>
-                    <Typography
-                      variant="h5"
-                      component="div"
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        fontSize: { xs: "1rem", sm: "1.5rem" },
-                      }}
-                    >
-                      <span>{order.parkingSpot.title}</span>
-                      <Chip
-                        label={order.status}
-                        color={
-                          order.status === "ONGOING" ? "secondary" : "primary"
-                        }
-                        size="small"
-                      />
-                    </Typography>
-                    <Typography variant="body2">
-                      {`${order.parkingSpot.address}`}
-                    </Typography>
-                    <Typography variant="body2">
-                      {`Postal Code: ${order.parkingSpot.postalCode}`}
-                    </Typography>
-                    <Typography variant="body2">
-                      {`Duration: ${order.duration} hrs`}
-                    </Typography>
-                    <Typography variant="body2">
-                      {`Total: €${order.price}`}
-                    </Typography>
-                    <Typography variant="body2">
-                      {`Date: ${order.createdAt}`}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              ))}
+              {orders.length === 0 ? (
+                <Container maxWidth="sm">
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ height: { sm: "80vh", xs: "40vh" } }}
+                  >
+                    <img
+                      src={NoDataImage}
+                      alt="No data"
+                      style={{ width: "100%", height: "auto" }}
+                    />
+                  </Box>
+                </Container>
+              ) : (
+                <Box>
+                  {orders.map((order, index) => (
+                    <Card key={index} sx={{ minWidth: "auto", m: 3 }}>
+                      <CardContent>
+                        <Typography
+                          variant="h5"
+                          component="div"
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: { xs: "1rem", sm: "1.5rem" },
+                          }}
+                        >
+                          <span>{order.parkingSpot.title}</span>
+                          <Chip
+                            label={order.status}
+                            color={
+                              order.status === "ONGOING"
+                                ? "secondary"
+                                : "primary"
+                            }
+                            size="small"
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          {`${order.parkingSpot.address}`}
+                        </Typography>
+                        <Typography variant="body2">
+                          {`Postal Code: ${order.parkingSpot.postalCode}`}
+                        </Typography>
+                        <Typography variant="body2">
+                          {`Duration: ${order.duration} hrs`}
+                        </Typography>
+                        <Typography variant="body2">
+                          {`Total: €${order.price}`}
+                        </Typography>
+                        <Typography variant="body2">
+                          {`Date: ${order.createdAt}`}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </Box>
+              )}
             </PullToRefresh>
           </Grid>
         </Grid>

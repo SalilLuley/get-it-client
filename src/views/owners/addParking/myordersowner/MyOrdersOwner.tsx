@@ -105,6 +105,7 @@ export default function MyOrdersOwner() {
         sx={{
           backgroundColor: "#F6F6F6",
           ml: { sm: "240px", xs: 0 },
+          flexGrow: 1,
         }}
       >
         <Grid sx={{ backgroundColor: "#F6F6F6" }} flex={1} container>

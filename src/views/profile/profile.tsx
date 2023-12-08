@@ -159,7 +159,7 @@ export default function Profile() {
                 type="submit"
                 sx={{ mt: 2 }}
               >
-                Submit
+                Update
               </Button>
             </Box>
             <Modal

@@ -13,18 +13,6 @@ import React, { useState } from "react";
 
 import { NETWORKING_CONTSTANTS } from "../../../network/Common";
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 export default function OwnerAddParking() {
   const config = {
     headers: {
@@ -76,22 +64,133 @@ export default function OwnerAddParking() {
       <Box
         component="main"
         sx={{
-          height: "100vh",
           backgroundColor: "#F6F6F6",
           display: "flex",
           flexDirection: "column",
+          minHeight: "100vh",
           ml: { sm: "240px", xs: 0 },
         }}
       >
-        <Grid flex={1} container>
-          <Grid item xs={10}>
-            <Container sx={{ mt: 5, mb: 5, ml: 2 }}>
+        <Grid container>
+          <Grid item xs={12} sm={10} md={8} lg={6}>
+            <Container sx={{ mt: 5, mb: 5 }}>
               <Typography variant="h4" component="h1" gutterBottom>
                 Add Parking Spot
               </Typography>
             </Container>
-            <form onSubmit={handleSubmit}>
-              <Stack spacing={2} direction="row" sx={{ mb: 4, ml: 5, mt: 5 }}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{ margin: 2, ml: { sm: 3 } }}
+            >
+              <Stack spacing={2} direction="column" sx={{ mb: 4, mt: 5 }}>
+                <Stack direction="row" spacing={2} sx={{ mb: 4, mt: 5 }}>
+                  <TextField
+                    type="text"
+                    variant="outlined"
+                    color="primary"
+                    label="Title"
+                    onChange={(e) => settitle(e.target.value)}
+                    value={title}
+                    fullWidth
+                    required
+                  />
+                  <TextField
+                    type="number"
+                    variant="outlined"
+                    color="primary"
+                    label="Rent"
+                    inputProps={{ min: 0, max: 100 }}
+                    onChange={(e) => setRent(parseInt(e.target.value))}
+                    onKeyDown={(e) => {
+                      // Allow only backspace, arrow keys, and delete
+                      if (![8, 37, 38, 39, 40, 46].includes(e.keyCode)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    value={rent}
+                    fullWidth
+                    required
+                  />
+                </Stack>
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  color="primary"
+                  label="Description"
+                  onChange={(e) => setBody(e.target.value)}
+                  value={body}
+                  fullWidth
+                  required
+                  sx={{ mb: 4 }}
+                />
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  color="primary"
+                  label="Address"
+                  onChange={(e) => setAddress(e.target.value)}
+                  value={address}
+                  fullWidth
+                  required
+                  sx={{ mb: 4 }}
+                />
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  color="primary"
+                  label="Postal Code"
+                  onChange={(e) => setPostalCode(e.target.value)}
+                  value={postalCode}
+                  fullWidth
+                  required
+                  sx={{ mb: 4 }}
+                />
+              </Stack>
+              <Button variant="contained" type="submit">
+                Create
+              </Button>
+            </Box>
+            <Modal
+              open={openSuccess}
+              onClose={handleSuccessClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transBox: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  border: "2px solid #000",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Success
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Parking added successfully.
+                </Typography>
+              </Box>
+            </Modal>
+          </Grid>
+        </Grid>
+        {/* <Container maxWidth="md" sx={{ mt: 5, mb: 5 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Add Parking Spot
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ margin: 2, ml: { sm: 1 } }}
+          >
+            <Stack spacing={2} direction="column" sx={{ mb: 4, mt: 5 }}>
+              <Stack direction="row" spacing={2} sx={{ mb: 4, mt: 5 }}>
                 <TextField
                   type="text"
                   variant="outlined"
@@ -129,7 +228,7 @@ export default function OwnerAddParking() {
                 value={body}
                 fullWidth
                 required
-                sx={{ mb: 4, ml: 5 }}
+                sx={{ mb: 4 }}
               />
               <TextField
                 type="text"
@@ -140,7 +239,7 @@ export default function OwnerAddParking() {
                 value={address}
                 fullWidth
                 required
-                sx={{ mb: 4, ml: 5 }}
+                sx={{ mb: 4 }}
               />
               <TextField
                 type="text"
@@ -151,57 +250,41 @@ export default function OwnerAddParking() {
                 value={postalCode}
                 fullWidth
                 required
-                sx={{ mb: 4, ml: 5 }}
+                sx={{ mb: 4 }}
               />
-              <Button sx={{ ml: 5 }} variant="contained" type="submit">
-                Submit
+              <Button variant="contained" type="submit">
+                Create
               </Button>
-            </form>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
+            </Stack>
+          </Box>
+          <Modal
+            open={openSuccess}
+            onClose={handleSuccessClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transBox: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
+                p: 4,
+              }}
             >
-              <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Error
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Only users with role Owners can add parking spots, please
-                  contact admin to change your role.
-                </Typography>
-              </Box>
-            </Modal>
-            <Modal
-              open={openSuccess}
-              onClose={handleSuccessClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: 400,
-                  bgcolor: "background.paper",
-                  border: "2px solid #000",
-                  boxShadow: 24,
-                  p: 4,
-                }}
-              >
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Success
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Parking added successfully.
-                </Typography>
-              </Box>
-            </Modal>
-          </Grid>
-        </Grid>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Success
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Parking added successfully.
+              </Typography>
+            </Box>
+          </Modal>
+        </Container> */}
       </Box>
     </React.Fragment>
   );
