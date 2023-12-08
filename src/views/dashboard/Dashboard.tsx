@@ -43,7 +43,7 @@ export default function Dashboard() {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const recordsPerPage = 2;
+  const recordsPerPage = 3;
 
   const config = {
     headers: {
@@ -59,7 +59,7 @@ export default function Dashboard() {
     const response = await axios.get(
       NETWORKING_CONTSTANTS.BASE_URL +
         NETWORKING_CONTSTANTS.PARKING.GET_ALL +
-        `${page}`,
+        `${page}/${recordsPerPage}`,
       config
     );
 
@@ -90,6 +90,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (parkingData) {
       const totalRecords = parkingData[0].total;
+      console.log("totalRecords", totalRecords);
+      console.log("parkingData", parkingData);
+
       setParkingSpots(parkingData);
       setTotalPages(Math.ceil(totalRecords / recordsPerPage));
     }
