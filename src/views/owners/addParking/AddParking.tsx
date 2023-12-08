@@ -25,11 +25,8 @@ export default function OwnerAddParking() {
   const [body, setBody] = useState("");
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [open, setOpen] = useState(false);
   const [openSuccess, setSuccessOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [image, setImage] = useState(null);
 
   const handleSuccessOpen = () => setSuccessOpen(true);
   const handleSuccessClose = () => setSuccessOpen(false);
@@ -54,10 +51,12 @@ export default function OwnerAddParking() {
       .then(() => {
         handleSuccessOpen();
       })
-      .catch(() => {
-        handleOpen();
-      });
+      .catch(() => {});
   }
+
+  const handleImageChange = (e: any) => {
+    setImage(e.target.files[0]);
+  };
 
   return (
     <React.Fragment>
@@ -150,6 +149,10 @@ export default function OwnerAddParking() {
               <Button variant="contained" type="submit">
                 Create
               </Button>
+              {/* <Button sx={{ ml: 2 }} variant="contained" component="label">
+                Upload Image
+                <input type="file" hidden onChange={handleImageChange} />
+              </Button> */}
             </Box>
             <Modal
               open={openSuccess}
@@ -180,111 +183,6 @@ export default function OwnerAddParking() {
             </Modal>
           </Grid>
         </Grid>
-        {/* <Container maxWidth="md" sx={{ mt: 5, mb: 5 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Add Parking Spot
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ margin: 2, ml: { sm: 1 } }}
-          >
-            <Stack spacing={2} direction="column" sx={{ mb: 4, mt: 5 }}>
-              <Stack direction="row" spacing={2} sx={{ mb: 4, mt: 5 }}>
-                <TextField
-                  type="text"
-                  variant="outlined"
-                  color="primary"
-                  label="Title"
-                  onChange={(e) => settitle(e.target.value)}
-                  value={title}
-                  fullWidth
-                  required
-                />
-                <TextField
-                  type="number"
-                  variant="outlined"
-                  color="primary"
-                  label="Rent"
-                  inputProps={{ min: 0, max: 100 }}
-                  onChange={(e) => setRent(parseInt(e.target.value))}
-                  onKeyDown={(e) => {
-                    // Allow only backspace, arrow keys, and delete
-                    if (![8, 37, 38, 39, 40, 46].includes(e.keyCode)) {
-                      e.preventDefault();
-                    }
-                  }}
-                  value={rent}
-                  fullWidth
-                  required
-                />
-              </Stack>
-              <TextField
-                type="text"
-                variant="outlined"
-                color="primary"
-                label="Description"
-                onChange={(e) => setBody(e.target.value)}
-                value={body}
-                fullWidth
-                required
-                sx={{ mb: 4 }}
-              />
-              <TextField
-                type="text"
-                variant="outlined"
-                color="primary"
-                label="Address"
-                onChange={(e) => setAddress(e.target.value)}
-                value={address}
-                fullWidth
-                required
-                sx={{ mb: 4 }}
-              />
-              <TextField
-                type="text"
-                variant="outlined"
-                color="primary"
-                label="Postal Code"
-                onChange={(e) => setPostalCode(e.target.value)}
-                value={postalCode}
-                fullWidth
-                required
-                sx={{ mb: 4 }}
-              />
-              <Button variant="contained" type="submit">
-                Create
-              </Button>
-            </Stack>
-          </Box>
-          <Modal
-            open={openSuccess}
-            onClose={handleSuccessClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transBox: "translate(-50%, -50%)",
-                width: 400,
-                bgcolor: "background.paper",
-                border: "2px solid #000",
-                boxShadow: 24,
-                p: 4,
-              }}
-            >
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Success
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Parking added successfully.
-              </Typography>
-            </Box>
-          </Modal>
-        </Container> */}
       </Box>
     </React.Fragment>
   );
