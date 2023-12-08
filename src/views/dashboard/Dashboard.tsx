@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Autocomplete,
   Box,
+  Container,
   CssBaseline,
   List,
   ListItem,
@@ -22,6 +23,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useQuery } from "react-query";
+import NoDataImage from "../../assets/nodata.jpg";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -52,50 +55,61 @@ export default function Dashboard() {
     setPage(value);
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        NETWORKING_CONTSTANTS.BASE_URL +
-          NETWORKING_CONTSTANTS.PARKING.GET_ALL +
-          `${page}`,
-        config
-      )
-      .then((data: any) => {
-        const totalRecords = data.data.data[0].total;
-        console.log(totalRecords);
-        setParkingSpots(data.data.data);
-        setTotalPages(Math.ceil(totalRecords / recordsPerPage));
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          setOpen(true);
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
-      });
+  const fetchParkingSpots = async () => {
+    const response = await axios.get(
+      NETWORKING_CONTSTANTS.BASE_URL +
+        NETWORKING_CONTSTANTS.PARKING.GET_ALL +
+        `${page}`,
+      config
+    );
 
-    axios
-      .get(
-        NETWORKING_CONTSTANTS.BASE_URL +
-          NETWORKING_CONTSTANTS.PARKING.GET_ALL_AUTOCOMPLETE,
-        config
-      )
-      .then((data: any) => {
-        const parkingSpots: any[] = data.data.data;
-        const spots: any = parkingSpots.map((item: any) => {
-          return {
-            label: item.title,
-            id: item.id,
-          };
-        });
-        setSearchSetParkingSpots(spots);
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          setOpen(true);
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
+    return response.data.data;
+  };
+
+  const fetchAutoCompleteSpots = async () => {
+    const response = await axios.get(
+      NETWORKING_CONTSTANTS.BASE_URL +
+        NETWORKING_CONTSTANTS.PARKING.GET_ALL_AUTOCOMPLETE,
+      config
+    );
+    return response.data.data;
+  };
+
+  const { data: parkingData, isError: parkingError } = useQuery(
+    ["parkingSpots", page],
+    fetchParkingSpots,
+    { keepPreviousData: true }
+  );
+
+  const { data: autoCompleteData, isError: autoCompleteError } = useQuery(
+    ["autoCompleteSpots", page],
+    fetchAutoCompleteSpots,
+    { keepPreviousData: true }
+  );
+
+  useEffect(() => {
+    if (parkingData) {
+      const totalRecords = parkingData[0].total;
+      setParkingSpots(parkingData);
+      setTotalPages(Math.ceil(totalRecords / recordsPerPage));
+    }
+
+    if (autoCompleteData) {
+      const parkingSpots: any[] = autoCompleteData;
+      const spots: any = parkingSpots.map((item: any) => {
+        return {
+          label: item.title,
+          id: item.id,
+        };
       });
-  }, [page]);
+      setSearchSetParkingSpots(spots);
+    }
+
+    if (parkingError || autoCompleteError) {
+      setOpen(true);
+      navigate(ROUTES.SIGN_IN, { replace: true });
+    }
+  }, [parkingData, autoCompleteData, parkingError, autoCompleteError]);
 
   const handleRentRangeChange = (_: Event, newValue: number | number[]) => {
     setRent(newValue as number);
@@ -123,27 +137,27 @@ export default function Dashboard() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const postalCode = event.target.value;
-
     setPostalCode(postalCode);
-
-    axios
-      .post(
-        NETWORKING_CONTSTANTS.BASE_URL +
-          NETWORKING_CONTSTANTS.PARKING.FILTER.RENT,
-        {
-          postalCode,
-          rent: rent ?? 100,
-        },
-        config
-      )
-      .then((data: any) => {
-        setParkingSpots(data.data.data);
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
-      });
+    if (postalCode.length >= 3) {
+      axios
+        .post(
+          NETWORKING_CONTSTANTS.BASE_URL +
+            NETWORKING_CONTSTANTS.PARKING.FILTER.RENT,
+          {
+            postalCode,
+            rent: rent ?? 100,
+          },
+          config
+        )
+        .then((data: any) => {
+          setParkingSpots(data.data.data);
+        })
+        .catch((error) => {
+          if (error.code === "ERR_BAD_REQUEST") {
+            navigate(ROUTES.SIGN_IN, { replace: true });
+          }
+        });
+    }
   };
 
   return (
@@ -262,20 +276,37 @@ export default function Dashboard() {
             </Box>
           </Grid>
           <Grid item xs={12} sm={11} md={11} lg={11} xl={11}>
-            <Item>
-              <List sx={{ backgroundColor: "#F6F6F6" }}>
-                {parkingSpots.map((spot: any) => (
-                  <ListItem key={spot["title"]} disablePadding>
-                    <ActionAreaCard {...spot} />
-                  </ListItem>
-                ))}
-                <Pagination
-                  count={totalPages}
-                  page={page}
-                  onChange={handlePageChange}
-                />
-              </List>
-            </Item>
+            {parkingSpots.length === 0 ? (
+              <Container maxWidth="sm">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ height: { sm: "80vh", xs: "40vh" } }}
+                >
+                  <img
+                    src={NoDataImage}
+                    alt="No data"
+                    style={{ width: "100%", height: "auto" }}
+                  />
+                </Box>
+              </Container>
+            ) : (
+              <Item>
+                <List sx={{ backgroundColor: "#F6F6F6" }}>
+                  {parkingSpots.map((spot: any) => (
+                    <ListItem key={spot["title"]} disablePadding>
+                      <ActionAreaCard {...spot} />
+                    </ListItem>
+                  ))}
+                  <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                  />
+                </List>
+              </Item>
+            )}
           </Grid>
         </Grid>
       </Box>

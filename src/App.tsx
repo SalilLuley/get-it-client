@@ -13,6 +13,7 @@ import Settings from "./views/settings/Settings";
 import OwnerAddParking from "./views/owners/addParking/AddParking";
 import MyOrders from "./views/myorders/MyOrders";
 import MyOrdersOwner from "./views/owners/addParking/myordersowner/MyOrdersOwner";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const defaultTheme = createTheme();
 
@@ -26,34 +27,46 @@ const SidebarLayout = () => (
     /> */}
   </>
 );
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 1000 * 60, // 1 minute
+    },
+  },
+});
 
 function App() {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path={"/"} element={<PrivateRoute />} />
-          <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
-          <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-          <Route path={ROUTES.DEFAULT} element={<PrivateRoute />}></Route>
-          <Route element={<SidebarLayout />}>
-            <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-            <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
-            <Route path={ROUTES.DETAIL} element={<OrderDetailsPage />}></Route>
-            <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
-            <Route
-              path={ROUTES.MY_PARKING_SLOTS}
-              element={<OwnerAddParking />}
-            ></Route>
-            <Route path={ROUTES.MYORDERS} element={<MyOrders />}></Route>
-            <Route
-              path={ROUTES.ONGOING_ORDERS}
-              element={<MyOrdersOwner />}
-            ></Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={defaultTheme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path={"/"} element={<PrivateRoute />} />
+            <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
+            <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+            <Route path={ROUTES.DEFAULT} element={<PrivateRoute />}></Route>
+            <Route element={<SidebarLayout />}>
+              <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+              <Route path={ROUTES.PROFILE} element={<Profile />}></Route>
+              <Route
+                path={ROUTES.DETAIL}
+                element={<OrderDetailsPage />}
+              ></Route>
+              <Route path={ROUTES.SETTINGS} element={<Settings />}></Route>
+              <Route
+                path={ROUTES.MY_PARKING_SLOTS}
+                element={<OwnerAddParking />}
+              ></Route>
+              <Route path={ROUTES.MYORDERS} element={<MyOrders />}></Route>
+              <Route
+                path={ROUTES.ONGOING_ORDERS}
+                element={<MyOrdersOwner />}
+              ></Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
