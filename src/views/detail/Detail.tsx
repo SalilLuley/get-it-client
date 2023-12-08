@@ -30,7 +30,10 @@ const OrderDetailsPage = () => {
   const [disableBtn, setDisableBtn] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    navigate(ROUTES.MYORDERS, { replace: true });
+  };
 
   const handleErrorOpen = () => setOpenError(true);
   const handleErrorClose = () => setOpenError(false);

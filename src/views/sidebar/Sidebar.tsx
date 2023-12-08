@@ -28,7 +28,7 @@ enum SidebarItems {
   Dashboard = "Dashboard",
   MyOrders = "My Orders",
   Profile = "Profile",
-  MyParkingSlots = "My Parking Slots",
+  AddParkingSlots = "Add Parking Slots",
   OngoingOwners = "Ongoing Orders",
 }
 
@@ -45,7 +45,7 @@ export default function ResponsiveDrawer() {
 
   const handlePageChange = (text: string) => {
     if (text === SidebarItems.MyOrders) navigate(ROUTES.MYORDERS);
-    else if (text === SidebarItems.MyParkingSlots)
+    else if (text === SidebarItems.AddParkingSlots)
       navigate(ROUTES.MY_PARKING_SLOTS);
     else if (text === SidebarItems.OngoingOwners)
       navigate(ROUTES.ONGOING_ORDERS);
@@ -107,7 +107,7 @@ export default function ResponsiveDrawer() {
       <Divider sx={{ bgcolor: "white" }} />
       {userRole !== "user" && (
         <List>
-          {[SidebarItems.MyParkingSlots, SidebarItems.OngoingOwners].map(
+          {[SidebarItems.AddParkingSlots, SidebarItems.OngoingOwners].map(
             (text, index) => (
               <ListItem
                 sx={{ color: "black" }}
