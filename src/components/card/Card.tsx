@@ -32,11 +32,11 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
         borderRadius: 2,
         flexDirection: { xs: "column", sm: "row" },
       }}
+      onClick={() => {
+        navigate(ROUTES.DETAIL, { state: { id: parkingSpot.id } });
+      }}
     >
       <CardMedia
-        onClick={() => {
-          navigate(ROUTES.DETAIL, { state: { id: parkingSpot.id } });
-        }}
         component="img"
         sx={{
           width: { xs: "100%", sm: "40%" },

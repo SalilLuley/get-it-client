@@ -104,7 +104,7 @@ export default function MyOrders() {
               }}
             >
               {orders.map((order, index) => (
-                <Card key={index} sx={{ minWidth: "auto", m: 5 }}>
+                <Card key={index} sx={{ minWidth: "auto", m: 3 }}>
                   <CardContent>
                     <Typography
                       variant="h5"

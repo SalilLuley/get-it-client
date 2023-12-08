@@ -26,11 +26,18 @@ export default function Profile() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [emailError, setEmailError] = useState(false);
 
   const [openSuccess, setSuccessOpen] = useState(false);
 
   const handleSuccessOpen = () => setSuccessOpen(true);
   const handleSuccessClose = () => setSuccessOpen(false);
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setEmailError(!emailRegex.test(event.target.value));
+  };
 
   useEffect(() => {
     axios
@@ -77,25 +84,29 @@ export default function Profile() {
       <Box
         component="main"
         sx={{
-          height: "100vh",
           backgroundColor: "#F6F6F6",
           display: "flex",
           flexDirection: "column",
           ml: { sm: "240px", xs: 0 },
+          minHeight: "100vh",
         }}
       >
-        <Grid flex={1} container>
-          <Grid item xs={10}>
-            <Container sx={{ mt: 5, mb: 5, ml: 2 }}>
+        <Grid container>
+          <Grid item xs={12} sm={10} md={8} lg={6}>
+            <Container sx={{ mt: 5, mb: 5 }}>
               <Typography variant="h4" component="h1" gutterBottom>
                 Update Profile Details
               </Typography>
             </Container>
-            <form onSubmit={handleSubmit}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{ margin: 2, ml: { sm: 3 } }}
+            >
               <Stack
                 spacing={2}
-                direction="row"
-                sx={{ marginBottom: 4, ml: 5, mt: 5 }}
+                direction={{ xs: "column", sm: "row" }}
+                sx={{ marginBottom: 4, mt: 5 }}
               >
                 <TextField
                   type="text"
@@ -121,22 +132,13 @@ export default function Profile() {
                 variant="outlined"
                 color="primary"
                 label="Email"
-                onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 fullWidth
-                sx={{ mb: 4, ml: 5 }}
+                sx={{ mb: 4 }}
+                onChange={handleEmailChange}
+                error={emailError}
+                helperText={emailError ? "Invalid email" : ""}
               />
-              {/* <TextField
-            type="password"
-            variant="outlined"
-            color="primary"
-            label="Password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            
-            fullWidth
-            sx={{ mb: 4, ml: 5 }}
-          /> */}
               <TextField
                 type="date"
                 variant="outlined"
@@ -144,12 +146,22 @@ export default function Profile() {
                 onChange={(e) => setDateOfBirth(e.target.value)}
                 value={dateOfBirth}
                 fullWidth
-                sx={{ mb: 4, ml: 5 }}
+                sx={{ mb: 4 }}
+                InputProps={{
+                  inputProps: {
+                    max: "2006-12-31",
+                  },
+                }}
               />
-              <Button sx={{ ml: 5 }} variant="contained" type="submit">
+              <Button
+                disabled={emailError}
+                variant="contained"
+                type="submit"
+                sx={{ mt: 2 }}
+              >
                 Submit
               </Button>
-            </form>
+            </Box>
             <Modal
               open={openSuccess}
               onClose={handleSuccessClose}

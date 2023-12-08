@@ -52,6 +52,9 @@ export default function ResponsiveDrawer() {
     else if (text === SidebarItems.Profile) navigate(ROUTES.PROFILE);
     else if (text === SidebarItems.Dashboard) navigate(ROUTES.DASHBOARD);
     else navigate(text);
+
+    setOpen(false);
+    setMobileOpen(false);
   };
 
   const handleLogout = () => {
