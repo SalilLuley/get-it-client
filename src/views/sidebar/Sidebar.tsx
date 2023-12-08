@@ -44,7 +44,14 @@ export default function ResponsiveDrawer() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handlePageChange = (text: string) => {
-    navigate(text);
+    if (text === SidebarItems.MyOrders) navigate(ROUTES.MYORDERS);
+    else if (text === SidebarItems.MyParkingSlots)
+      navigate(ROUTES.MY_PARKING_SLOTS);
+    else if (text === SidebarItems.OngoingOwners)
+      navigate(ROUTES.ONGOING_ORDERS);
+    else if (text === SidebarItems.Profile) navigate(ROUTES.PROFILE);
+    else if (text === SidebarItems.Dashboard) navigate(ROUTES.DASHBOARD);
+    else navigate(text);
   };
 
   const handleLogout = () => {

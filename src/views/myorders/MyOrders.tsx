@@ -13,6 +13,7 @@ import { NETWORKING_CONTSTANTS } from "../../network/Common.tsx";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants.tsx";
 import PullToRefresh from "react-pull-to-refresh";
+import { useQuery } from "react-query";
 
 export type MyOrders = Order[];
 
@@ -47,35 +48,38 @@ export default function MyOrders() {
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get(
-        NETWORKING_CONTSTANTS.BASE_URL +
-          NETWORKING_CONTSTANTS.ORDERS.GET_MY_ORDERS,
-        config
-      )
-      .then((data: any) => {
-        const myOrders = data.data.data
-          .map((order: any) => {
-            return {
-              duration: order.duration,
-              orderId: order.orderId,
-              parkingSpotId: order.parkingSpotId,
-              price: order.price,
-              parkingSpot: order.parkingSpot,
-              status: order.status,
-              createdAt: order.createdAt,
-            };
-          })
-          .reverse();
-        setOrders(myOrders);
+  const fetchOrders = async () => {
+    const response = await axios.get(
+      NETWORKING_CONTSTANTS.BASE_URL +
+        NETWORKING_CONTSTANTS.ORDERS.GET_MY_ORDERS,
+      config
+    );
+    return response.data.data
+      .map((order: any) => {
+        return {
+          duration: order.duration,
+          orderId: order.orderId,
+          parkingSpotId: order.parkingSpotId,
+          price: order.price,
+          parkingSpot: order.parkingSpot,
+          status: order.status,
+          createdAt: order.createdAt,
+        };
       })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          navigate(ROUTES.SIGN_IN, { replace: true });
-        }
-      });
-  }, [refresh]);
+      .reverse();
+  };
+
+  const { data: queryOrders, isError } = useQuery("orders", fetchOrders);
+
+  if (isError) {
+    navigate(ROUTES.SIGN_IN, { replace: true });
+  }
+
+  useEffect(() => {
+    if (queryOrders) {
+      setOrders(queryOrders);
+    }
+  }, [queryOrders, refresh]);
 
   return (
     <React.Fragment>
