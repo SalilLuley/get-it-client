@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Autocomplete,
   Box,
+  Button,
   Container,
   CssBaseline,
   List,
@@ -163,6 +164,11 @@ export default function Dashboard() {
     }
   };
 
+  const clearFilters = () => {
+    setPostalCode("");
+    setParkingSpots(parkingData);
+  };
+
   return (
     <CssBaseline>
       <Box
@@ -275,6 +281,14 @@ export default function Dashboard() {
                     </AccordionDetails>
                   </Accordion>
                 </AccordionDetails>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={clearFilters}
+                  sx={{ m: 2 }}
+                >
+                  Clear Filters
+                </Button>
               </Accordion>
             </Box>
           </Grid>

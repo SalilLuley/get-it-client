@@ -3,10 +3,10 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import fav from "../../assets/fav.png";
+import GradeIcon from "@mui/icons-material/Grade";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../route/Constants";
-import { Chip } from "@mui/material";
+import { Chip, Icon } from "@mui/material";
 
 interface ParkingSpot {
   id: number;
@@ -65,7 +65,7 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
             />
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box component="img" src={fav} />
+            <GradeIcon style={{ color: "#FFD700" }}></GradeIcon>
             <Typography
               variant="subtitle1"
               color="text.secondary"
@@ -78,11 +78,9 @@ export default function ActionAreaCard(parkingSpot: ParkingSpot) {
             variant="subtitle1"
             color="text"
             component="div"
-            // noWrap
             sx={{
               textOverflow: "ellipsis",
               overflow: "hidden",
-              // whiteSpace: "nowrap",
             }}
           >
             {parkingSpot.body}
