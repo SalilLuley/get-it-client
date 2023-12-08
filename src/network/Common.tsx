@@ -1,6 +1,9 @@
 export const NETWORKING_CONTSTANTS = {
   BASE_URL: "http://localhost:2001/",
   SIGN_UP: "auth/login",
+  AUTH: {
+    VALIDATE_TOKEN: "auth/verify-token",
+  },
   USER: {
     GET_MY_PROFILE: "users/get-my-profile",
     UPDATE: "users/update",
