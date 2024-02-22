@@ -36,6 +36,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  console.log("Started")
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={defaultTheme}>

@@ -1,0 +1,1 @@
+docker build -t parko-client . && docker run -p 3000:3000 parko-client
